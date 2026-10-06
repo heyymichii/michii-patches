@@ -43,10 +43,31 @@ Then patch LinkedIn with Morphe Manager. Do not share patched APKs; share this p
 ## 🩹 Patches list
 
 <!-- PATCHES_START EXPANDED -->
+> **[v1.0.0](https://github.com/heyymichii/michii-patches/releases/tag/v1.0.0)**&nbsp;&nbsp;•&nbsp;&nbsp;`main`&nbsp;&nbsp;•&nbsp;&nbsp;11 patches total
+<details open>
+<summary>📦 LinkedIn&nbsp;&nbsp;•&nbsp;&nbsp;11 patches</summary>
+<br>
 
-<!-- Do not modify this section by hand. The patch list is generated when release.yml creates a new release. -->
+**🎯 Supported versions:**
 
-#### The patch list is generated automatically with the first release.
+| 4.1.1255.1 | 4.1.1258 |
+| :---: | :---: |
+
+| 💊&nbsp;Patch | 📜&nbsp;Description | ⚙️&nbsp;Options |
+|----------|----------------|-----------|
+| [Block tracking](#block-tracking) | Adds an option (off by default) to stop sending most LinkedIn analytics events. |  |
+| [Disable double-tap like](#disable-double-tap-like) | Stops double tapping a post or photo from liking it. |  |
+| [Download media](#download-media) | Adds a download button to the full screen photo and video viewer. |  |
+| [Feed filters](#feed-filters) | Adds optional filters (off by default, turned on in Michii Patches): focus mode, celebrations, job cards, reposts, video posts, the "New posts" pill and "See translation". |  |
+| [Hide Premium upsells](#hide-premium-upsells) | Removes Premium and AI upsell cards and banners, including on profiles and the Me panel. |  |
+| [Hide ads](#hide-ads) | Removes promoted (sponsored) posts from the feed. |  |
+| [Hide promoted jobs](#hide-promoted-jobs) | Removes promoted job listings from the Jobs tab and job search. |  |
+| [Hide suggested posts](#hide-suggested-posts) | Removes "Suggested" posts from outside your network from the feed. |  |
+| [Messaging](#messaging) | Hides sponsored messages, and adds an optional ghost mode that does not send typing indicators or read status. |  |
+| [Open links directly](#open-links-directly) | Opens external links without LinkedIn's safety/go warning page. |  |
+| [Sanitize share links](#sanitize-share-links) | Removes tracking parameters from LinkedIn links when they are copied or shared. |  |
+
+</details>
 
 <!-- PATCHES_END -->
 
