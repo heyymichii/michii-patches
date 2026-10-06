@@ -13,7 +13,7 @@ import java.nio.charset.StandardCharsets;
 
 /** Compares the installed patch bundle with the latest stable GitHub release. */
 final class UpdateChecker {
-    static final String REPO = "heymichii/michii-patches";
+    static final String REPO = "heyymichii/michii-patches";
     private static final String LATEST_RELEASE_API = "https://api.github.com/repos/" + REPO + "/releases/latest";
 
     enum Status {

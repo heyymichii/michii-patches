@@ -34,7 +34,7 @@ Other versions are marked experimental and may not work.
 
 ### How to use these patches
 
-Click here to add these patches to Morphe: https://morphe.software/add-source?github=heymichii/michii-patches
+Click here to add these patches to Morphe: https://morphe.software/add-source?github=heyymichii/michii-patches
 
 Then patch LinkedIn with Morphe Manager. Do not share patched APKs; share this patch source instead.
 

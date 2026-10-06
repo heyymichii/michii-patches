@@ -4,10 +4,10 @@ patches {
     about {
         name = "Michii Patches"
         description = "LinkedIn patches for use with Morphe"
-        source = "https://github.com/heymichii/michii-patches"
+        source = "https://github.com/heyymichii/michii-patches"
         author = "heyymichii"
         contact = "na"
-        website = "https://github.com/heymichii/michii-patches"
+        website = "https://github.com/heyymichii/michii-patches"
         license = "GPLv3"
     }
 }

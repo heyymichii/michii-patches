@@ -705,7 +705,7 @@ public final class SettingsActivity extends Activity {
     private void showCredits() {
         LinearLayout box = cardBox("Kredit", "Orang dan proyek di balik " + BRAND + ".");
         box.addView(creditCard(IconDrawable.PEOPLE, AUTHOR, "Pembuat " + BRAND,
-                "github.com/heymichii", "https://github.com/heymichii"));
+                "github.com/heyymichii", "https://github.com/heyymichii"));
         box.addView(creditCard(IconDrawable.CODE, "Morphe", "Patcher, Morphe Manager, dan template patch",
                 "morphe.software", MORPHE_WEBSITE));
         box.addView(creditCard(IconDrawable.INFO, "LinkedIn", "Aplikasi asli. " + BRAND
