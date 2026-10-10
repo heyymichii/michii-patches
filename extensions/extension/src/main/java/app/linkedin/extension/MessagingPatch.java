@@ -1,6 +1,5 @@
 package app.linkedin.extension;
 
-import android.util.Log;
 
 import java.lang.reflect.Method;
 import java.util.ArrayList;
@@ -31,7 +30,7 @@ public final class MessagingPatch {
             if (removed > 0) Settings.debugLog("hide sponsored conversations: " + removed);
             return result;
         } catch (Throwable t) {
-            Log.e(Settings.TAG, "filterSponsoredConversations failed", t);
+            Diagnostics.error("filterSponsoredConversations failed", t);
             return conversations;
         }
     }

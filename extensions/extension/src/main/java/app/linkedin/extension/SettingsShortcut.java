@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.content.pm.ShortcutInfo;
 import android.content.pm.ShortcutManager;
 import android.graphics.drawable.Icon;
-import android.util.Log;
 
 import java.util.Collections;
 
@@ -43,7 +42,7 @@ final class SettingsShortcut {
                     .build();
             manager.addDynamicShortcuts(Collections.singletonList(shortcut));
         } catch (Throwable t) {
-            Log.e(Settings.TAG, "Shortcut registration failed", t);
+            Diagnostics.error("Shortcut registration failed", t);
         }
     }
 }

@@ -3,7 +3,6 @@ package app.linkedin.extension;
 import android.app.DownloadManager;
 import android.content.Context;
 import android.net.Uri;
-import android.util.Log;
 import android.widget.Toast;
 
 /** Saves media through the system DownloadManager, into the folder chosen in Michii Patches. */
@@ -38,7 +37,7 @@ final class Downloads {
             manager.enqueue(request);
             return true;
         } catch (Throwable t) {
-            Log.e(Settings.TAG, "enqueue failed", t);
+            Diagnostics.error("enqueue failed", t);
             toast(context, I18n.f("Download failed: %1$s", t.getMessage()));
             return false;
         }

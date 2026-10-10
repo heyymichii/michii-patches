@@ -3,7 +3,6 @@ package app.linkedin.extension;
 import android.app.Activity;
 import android.content.Context;
 import android.content.ContextWrapper;
-import android.util.Log;
 import android.view.View;
 
 import java.lang.reflect.Constructor;
@@ -57,7 +56,7 @@ public final class NavPanelPatch {
             result.add(index, entry);
             return result;
         } catch (Throwable t) {
-            Log.e(Settings.TAG, "addSettingsItem failed", t);
+            Diagnostics.error("addSettingsItem failed", t);
             return list;
         }
     }
@@ -71,7 +70,7 @@ public final class NavPanelPatch {
             Field field = Reflect.field(presenter.getClass(), "sectionHeaderClickListener");
             if (field != null) field.set(presenter, open);
         } catch (Throwable t) {
-            Log.e(Settings.TAG, "onSectionBind failed", t);
+            Diagnostics.error("onSectionBind failed", t);
         }
     }
 

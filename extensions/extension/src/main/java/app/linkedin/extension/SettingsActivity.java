@@ -48,6 +48,8 @@ import java.util.Locale;
 public final class SettingsActivity extends Activity {
     static final String AUTHOR = "heyymichii";
     static final String BRAND = "Michii Patches";
+    static final int ACCENT_DARK = 0xFF2DBCB1;
+    static final int ACCENT_LIGHT = 0xFF00897B;
     private static final String MORPHE_WEBSITE = "https://morphe.software";
     /** Donation links: Trakteer is shown in Indonesian, Ko-fi in every other language. */
     private static final String TRAKTEER_URL = "https://trakteer.id/heyymichii";
@@ -272,7 +274,11 @@ public final class SettingsActivity extends Activity {
                 .action("Import settings", "Paste a settings backup from the clipboard.", this::importSettings)
                 .action("Reset to defaults", "Reset all Michii Patches settings.", this::resetSettings)
                 .toggle(Settings.DEBUG_LOGGING, false, "Diagnostic logging",
-                        "Write logs (tag LinkedInPatches) to help fix the patches."));
+                        "Adds more details to the diagnostic report. Turn it on, repeat the problem, then copy "
+                                + "the report.")
+                .action("Copy diagnostic report", "App, device, and patch details with the recent log, for a bug "
+                        + "report. Links and IDs are removed.", this::copyDiagnosticReport)
+                .action("Clear diagnostic log", "Deletes the saved log.", this::clearDiagnosticLog));
         return categories;
     }
 
@@ -299,6 +305,18 @@ public final class SettingsActivity extends Activity {
     private ScrollView scroll;
     private View restartBanner;
 
+    /**
+     * Colors the buttons of a dialog shown over LinkedIn's own screens, whose theme makes button text transparent.
+     */
+    static void tintButtons(AlertDialog dialog, Context context) {
+        boolean dark = (context.getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK)
+                == Configuration.UI_MODE_NIGHT_YES;
+        int color = dark ? ACCENT_DARK : ACCENT_LIGHT;
+        for (int which : new int[]{AlertDialog.BUTTON_POSITIVE, AlertDialog.BUTTON_NEGATIVE, AlertDialog.BUTTON_NEUTRAL}) {
+            if (dialog.getButton(which) != null) dialog.getButton(which).setTextColor(color);
+        }
+    }
+
     static void open(Context context) {
         Intent intent = new Intent(context, SettingsActivity.class);
         if (!(context instanceof Activity)) intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -318,7 +336,7 @@ public final class SettingsActivity extends Activity {
         divider = dark ? 0xFF2A2A2A : 0xFFE3E5E8;
         textPrimary = dark ? 0xFFFFFFFF : 0xFF141414;
         textSecondary = dark ? 0xFFA6A6A6 : 0xFF5F6368;
-        accent = dark ? 0xFF2DBCB1 : 0xFF00897B;
+        accent = dark ? ACCENT_DARK : ACCENT_LIGHT;
 
         Window window = getWindow();
         window.setStatusBarColor(background);
@@ -681,13 +699,9 @@ public final class SettingsActivity extends Activity {
     }
 
     /** Which patches were applied when this LinkedIn was patched. */
-    private void showPatchStatus() {
-        LinearLayout box = cardBox("Patch status", "Patches applied when this LinkedIn was patched.");
-        LinearLayout list = new LinearLayout(this);
-        list.setOrientation(LinearLayout.VERTICAL);
-        list.setBackground(outlined());
-
-        Object[][] patches = {
+    /** {patch name, applied} for every patch, as named in Morphe Manager. */
+    static Object[][] patches() {
+        return new Object[][]{
                 {"Hide ads", Settings.isHideAdsIncluded()},
                 {"Hide promoted jobs", Settings.isHidePromotedJobsIncluded()},
                 {"Hide suggested posts", Settings.isHideSuggestedIncluded()},
@@ -700,6 +714,15 @@ public final class SettingsActivity extends Activity {
                 {"Sanitize share links", Settings.isSanitizeShareLinksIncluded()},
                 {"Block tracking", Settings.isBlockTrackingIncluded()},
         };
+    }
+
+    private void showPatchStatus() {
+        LinearLayout box = cardBox("Patch status", "Patches applied when this LinkedIn was patched.");
+        LinearLayout list = new LinearLayout(this);
+        list.setOrientation(LinearLayout.VERTICAL);
+        list.setBackground(outlined());
+
+        Object[][] patches = patches();
         for (int i = 0; i < patches.length; i++) {
             if (i > 0) list.addView(linkDivider());
             boolean included = (Boolean) patches[i][1];
@@ -888,6 +911,21 @@ public final class SettingsActivity extends Activity {
     // endregion
 
     // region Backup
+
+    private void copyDiagnosticReport() {
+        try {
+            ClipboardManager clipboard = (ClipboardManager) getSystemService(CLIPBOARD_SERVICE);
+            clipboard.setPrimaryClip(ClipData.newPlainText(BRAND, Diagnostics.report(this)));
+            Downloads.toast(this, "Diagnostic report copied. Paste it into your bug report.");
+        } catch (Exception e) {
+            Downloads.toast(this, I18n.f("Export failed: %1$s", e.getMessage()));
+        }
+    }
+
+    private void clearDiagnosticLog() {
+        Diagnostics.clear();
+        Downloads.toast(this, "Diagnostic log cleared");
+    }
 
     private void exportSettings() {
         try {

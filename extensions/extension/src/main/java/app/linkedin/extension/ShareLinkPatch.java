@@ -3,7 +3,6 @@ package app.linkedin.extension;
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Intent;
-import android.util.Log;
 
 /**
  * Every ClipboardManager.setPrimaryClip and Intent.putExtra(String, String) call in LinkedIn's
@@ -34,7 +33,7 @@ public final class ShareLinkPatch {
             CharSequence label = clip.getDescription() == null ? null : clip.getDescription().getLabel();
             return ClipData.newPlainText(label, cleaned);
         } catch (Throwable t) {
-            Log.e(Settings.TAG, "cleanClip failed", t);
+            Diagnostics.error("cleanClip failed", t);
             return clip;
         }
     }

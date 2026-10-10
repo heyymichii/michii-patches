@@ -1,7 +1,6 @@
 package app.linkedin.extension;
 
 import android.net.Uri;
-import android.util.Log;
 
 /**
  * LinkedIn routes external links through https://www.linkedin.com/safety/go/?url=<target>,
@@ -16,7 +15,7 @@ public final class OpenLinksDirectlyPatch {
             if (uri == null || !Settings.openLinksDirectly()) return uri;
             return expandShortLink(unwrapSafetyPage(uri));
         } catch (Throwable t) {
-            Log.e(Settings.TAG, "unwrap failed", t);
+            Diagnostics.error("unwrap failed", t);
             return uri;
         }
     }

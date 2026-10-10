@@ -292,7 +292,7 @@ public final class Settings {
         if (p != null) p.edit().putBoolean(key, value).apply();
     }
 
-    private static SharedPreferences prefs() {
+    static SharedPreferences prefs() {
         if (prefs == null) {
             Context context = app();
             if (context != null) prefs = context.getSharedPreferences(PREFS, Context.MODE_PRIVATE);
@@ -313,6 +313,6 @@ public final class Settings {
     }
 
     static void debugLog(String message) {
-        if (debug()) Log.d(TAG, message);
+        Diagnostics.debug(message);
     }
 }

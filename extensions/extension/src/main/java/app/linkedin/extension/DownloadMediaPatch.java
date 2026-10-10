@@ -2,7 +2,6 @@ package app.linkedin.extension;
 
 import android.content.Context;
 import android.graphics.drawable.GradientDrawable;
-import android.util.Log;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.View;
@@ -39,7 +38,7 @@ public final class DownloadMediaPatch {
             // Presenters are recycled, so always rebind to the current item.
             ((ViewGroup) overlay).getChildAt(0).setOnClickListener(v -> download(v.getContext(), viewData));
         } catch (Throwable t) {
-            Log.e(TAG, "onMediaBind failed", t);
+            Diagnostics.error("onMediaBind failed", t);
         }
     }
 
@@ -81,7 +80,7 @@ public final class DownloadMediaPatch {
                 Downloads.toastStarted(context, 1, isVideo);
             }
         } catch (Throwable t) {
-            Log.e(TAG, "download failed", t);
+            Diagnostics.error("download failed", t);
             Downloads.toast(context, I18n.f("Download failed: %1$s", t.getMessage()));
         }
     }
