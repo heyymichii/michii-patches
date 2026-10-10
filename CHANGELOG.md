@@ -1,3 +1,15 @@
+## [1.1.0-dev.1](https://github.com/heyymichii/michii-patches/compare/v1.0.1-dev.1...v1.1.0-dev.1) (2026-10-10)
+
+### ✨ New Features
+
+* Add a diagnostic report for bug reports ([30dbd93](https://github.com/heyymichii/michii-patches/commit/30dbd9386bfeaea09ce40885d9b6621dcc8d2552))
+
+## [1.0.1-dev.1](https://github.com/heyymichii/michii-patches/compare/v1.0.0...v1.0.1-dev.1) (2026-10-10)
+
+### 🐛 Bug Fixes
+
+* Translate the settings and explain how to open them ([2588e6a](https://github.com/heyymichii/michii-patches/commit/2588e6ac101538ee7c82858c7c691ad3a1b02c94)), closes [#2](https://github.com/heyymichii/michii-patches/issues/2)
+
 ## 1.0.0 (2026-10-06)
 
 ### ✨ New Features

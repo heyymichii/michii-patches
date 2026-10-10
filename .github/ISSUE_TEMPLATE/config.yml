@@ -1,1 +1,8 @@
 blank_issues_enabled: false
+contact_links:
+  - name: 📖 How to use Michii Patches
+    url: https://github.com/heyymichii/michii-patches#how-to-use-these-patches
+    about: Adding the patch source to Morphe, supported versions, and how to open the settings.
+  - name: 💖 Support Michii Patches
+    url: https://ko-fi.com/heyymichii
+    about: Ko-fi, or Trakteer for supporters in Indonesia (trakteer.id/heyymichii).

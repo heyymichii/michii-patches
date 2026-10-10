@@ -1,6 +1,5 @@
 package app.linkedin.extension;
 
-import android.util.Log;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -45,7 +44,7 @@ public final class HideAdsPatch {
             Settings.debugLog("legacy feed: removed " + (updates.size() - result.size()) + " of " + updates.size());
             return result;
         } catch (Throwable t) {
-            Log.e(TAG, "filterSponsored failed", t);
+            Diagnostics.error("filterSponsored failed", t);
             return updates;
         }
     }

@@ -45,6 +45,7 @@ public final class Settings {
     static final String[] DOWNLOAD_BASE_DIRS = {"Download", "Pictures", "Movies", "DCIM"};
     static final String DEFAULT_DOWNLOAD_FOLDER = "LinkedIn";
     static final String DEBUG_LOGGING = "debug_logging";
+    static final String LANGUAGE = "language";
 
     private static SharedPreferences prefs;
 
@@ -245,6 +246,11 @@ public final class Settings {
         return DOWNLOAD_BASE_DIRS[0];
     }
 
+    /** I18n.LANGUAGE_AUTO or a language code from Translations.LANGUAGES. */
+    static String language() {
+        return getString(LANGUAGE, I18n.LANGUAGE_AUTO);
+    }
+
     static String downloadFolder() {
         return sanitizeFolder(getString(DOWNLOAD_FOLDER, DEFAULT_DOWNLOAD_FOLDER));
     }
@@ -286,7 +292,7 @@ public final class Settings {
         if (p != null) p.edit().putBoolean(key, value).apply();
     }
 
-    private static SharedPreferences prefs() {
+    static SharedPreferences prefs() {
         if (prefs == null) {
             Context context = app();
             if (context != null) prefs = context.getSharedPreferences(PREFS, Context.MODE_PRIVATE);
@@ -307,6 +313,6 @@ public final class Settings {
     }
 
     static void debugLog(String message) {
-        if (debug()) Log.d(TAG, message);
+        Diagnostics.debug(message);
     }
 }

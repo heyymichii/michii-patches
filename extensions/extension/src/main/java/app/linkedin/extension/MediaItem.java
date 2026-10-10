@@ -25,7 +25,7 @@ final class MediaItem {
     }
 
     String label() {
-        return video ? "Video " + size + "p" : "Foto " + size + "px";
+        return video ? "Video " + size + "p" : "Photo " + size + "px";
     }
 
     /**

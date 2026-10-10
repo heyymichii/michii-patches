@@ -3,20 +3,24 @@ package app.linkedin.extension;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.res.Configuration;
-import android.util.Log;
 
 /** Shows the changes of the installed patch bundle once, the first time LinkedIn opens after patching. */
 final class WhatsNew {
-    /** Newest first. Add an entry for every release that users should read about. */
+    /** Newest first: {version, notes in English}. Notes are translated like any other text. */
     static final String[][] CHANGELOG = {
-            {"1.0.0", "Rilis pertama Michii Patches.\n\n"
-                    + "• Sembunyikan iklan, lowongan promosi, post disarankan, dan promosi Premium\n"
-                    + "• Download foto, video, foto profil, dan banner, dengan lokasi simpan yang bisa diatur\n"
-                    + "• Filter feed: mode fokus, perayaan, lowongan, repost, video\n"
-                    + "• Chat: sembunyikan pesan bersponsor dan mode hantu\n"
-                    + "• Buka link langsung (termasuk lnkd.in) dan bersihkan link share\n"
-                    + "• Blokir tracking dan matikan double-tap like\n\n"
-                    + "Buka pengaturan lewat panel Me → Michii Patches."},
+            {"1.0.1", "• The settings now use your phone's language (English, Indonesian, Spanish, Portuguese, "
+                    + "French, German, Vietnamese, Thai, Turkish, Russian, or Japanese). You can pick another language "
+                    + "under Other → Language.\n\n"
+                    + "Open the settings from the Me panel → Michii Patches, or long press the LinkedIn icon "
+                    + "→ Michii Patches."},
+            {"1.0.0", "The first release of Michii Patches.\n\n"
+                    + "• Hide ads, promoted jobs, suggested posts, and Premium promotions\n"
+                    + "• Download photos, videos, profile photos, and banners, with a configurable save location\n"
+                    + "• Feed filters: focus mode, celebrations, jobs, reposts, videos\n"
+                    + "• Chat: hide sponsored messages, and ghost mode\n"
+                    + "• Open links directly (including lnkd.in) and clean share links\n"
+                    + "• Block tracking and disable double-tap like\n\n"
+                    + "Open the settings from the Me panel → Michii Patches."},
     };
 
     private static boolean checked;
@@ -28,7 +32,7 @@ final class WhatsNew {
     static String notesFor(String version) {
         String base = version.split("-", 2)[0];
         for (String[] entry : CHANGELOG) {
-            if (entry[0].equals(base)) return entry[1];
+            if (entry[0].equals(base)) return I18n.tr(entry[1]);
         }
         return null;
     }
@@ -45,15 +49,16 @@ final class WhatsNew {
             if (notes == null) return;
             boolean dark = (activity.getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK)
                     == Configuration.UI_MODE_NIGHT_YES;
-            new AlertDialog.Builder(activity, dark ? android.R.style.Theme_DeviceDefault_Dialog_Alert
+            AlertDialog dialog = new AlertDialog.Builder(activity, dark ? android.R.style.Theme_DeviceDefault_Dialog_Alert
                     : android.R.style.Theme_DeviceDefault_Light_Dialog_Alert)
-                    .setTitle("Apa yang baru di " + SettingsActivity.BRAND + " " + version)
+                    .setTitle(I18n.f("What's new in %1$s %2$s", SettingsActivity.BRAND, version))
                     .setMessage(notes)
-                    .setPositiveButton("Oke", null)
-                    .setNeutralButton("Pengaturan", (dialog, which) -> SettingsActivity.open(activity))
+                    .setPositiveButton("OK", null)
+                    .setNeutralButton(I18n.tr("Settings"), (d, which) -> SettingsActivity.open(activity))
                     .show();
+            SettingsActivity.tintButtons(dialog, activity);
         } catch (Throwable t) {
-            Log.e(Settings.TAG, "WhatsNew failed", t);
+            Diagnostics.error("WhatsNew failed", t);
         }
     }
 }

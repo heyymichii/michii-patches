@@ -1,6 +1,5 @@
 package app.linkedin.extension;
 
-import android.util.Log;
 
 import java.util.List;
 
@@ -58,7 +57,7 @@ public final class SduiComponentFilter {
             }
             return false;
         } catch (Throwable t) {
-            Log.e(Settings.TAG, "shouldHide failed", t);
+            Diagnostics.error("shouldHide failed", t);
             return false;
         }
     }
