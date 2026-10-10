@@ -195,7 +195,7 @@ public final class SduiMediaDownload {
     private static void onDownloadClick(Activity activity, Object fragment) {
         List<MediaItem> items = mediaByFragment.get(fragment);
         if (items == null || items.isEmpty()) {
-            Downloads.toast(activity, "Media tidak ditemukan");
+            Downloads.toast(activity, "Media not found");
             return;
         }
         if (items.size() == 1) {
@@ -233,10 +233,10 @@ public final class SduiMediaDownload {
         };
 
         new AlertDialog.Builder(activity)
-                .setTitle("Pilih media")
+                .setTitle(I18n.tr("Choose media"))
                 .setAdapter(adapter, (dialog, which) -> download(activity, items.subList(which, which + 1)))
-                .setPositiveButton("Semua (" + items.size() + ")", (dialog, which) -> download(activity, items))
-                .setNegativeButton("Batal", null)
+                .setPositiveButton(I18n.f("All (%1$s)", items.size()), (dialog, which) -> download(activity, items))
+                .setNegativeButton(I18n.tr("Cancel"), null)
                 .show();
     }
 
@@ -255,7 +255,7 @@ public final class SduiMediaDownload {
         loadThumbnail(thumb, item.thumbnailUrl);
 
         TextView label = new TextView(context);
-        label.setText((position + 1) + ". " + item.label());
+        label.setText((position + 1) + ". " + (item.video ? I18n.f("Video %1$sp", item.size) : I18n.f("Photo %1$spx", item.size)));
         label.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
         label.setPadding(pad, 0, 0, 0);
         row.addView(label);

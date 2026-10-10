@@ -73,7 +73,7 @@ public final class DownloadMediaPatch {
             boolean isVideo = url != null;
             if (!isVideo) url = findImageUrl(viewData);
             if (url == null) {
-                Downloads.toast(context, "Media tidak ditemukan");
+                Downloads.toast(context, "Media not found");
                 return;
             }
 
@@ -82,7 +82,7 @@ public final class DownloadMediaPatch {
             }
         } catch (Throwable t) {
             Log.e(TAG, "download failed", t);
-            Downloads.toast(context, "Download gagal: " + t.getMessage());
+            Downloads.toast(context, I18n.f("Download failed: %1$s", t.getMessage()));
         }
     }
 

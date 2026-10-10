@@ -20,9 +20,16 @@ Michii Patches removes ads and clutter from LinkedIn and adds features the app d
 - **Privacy:** open links directly without LinkedIn's warning page (including `lnkd.in` short
   links), remove tracking parameters from copied and shared links, and an optional analytics block.
 - **Disable double-tap like** on posts and photos.
-- **Settings:** a "Michii Patches" entry in the "Me" panel (tap your profile photo) to turn each
-  feature on or off, search settings, back up and restore them, see which patches are applied,
-  and check for updates.
+- **Settings:** turn each feature on or off, search settings, back up and restore them, see which
+  patches are applied, and check for updates. The settings are in English, or in Indonesian when
+  your phone uses Indonesian (change it under Other → Language).
+
+### Opening the settings
+
+- Tap your profile photo to open the "Me" panel, then **Michii Patches** (below "Saved posts"), or
+- long press the LinkedIn app icon on your home screen, then **Michii Patches**.
+
+The app icon shortcut is added the first time LinkedIn opens after patching.
 
 ### Supported version
 
@@ -70,6 +77,23 @@ Then patch LinkedIn with Morphe Manager. Do not share patched APKs; share this p
 </details>
 
 <!-- PATCHES_END -->
+
+### 🌐 Translations
+
+The settings screens are available in English, Bahasa Indonesia, Español, Português (Brasil), Français, Deutsch,
+Tiếng Việt, ไทย, Türkçe, Русский, and 日本語. They follow your phone's language, and you can pick another one under
+**Other → Language**.
+
+Found a wrong or awkward translation, or want to add a language? The texts are in
+[`extensions/extension/src/main/translations`](extensions/extension/src/main/translations), one JSON file per
+language with the English text as the key. Open an issue or a pull request.
+
+### 💖 Support
+
+If Michii Patches is useful to you, you can support its development:
+
+- [Ko-fi](https://ko-fi.com/heyymichii)
+- [Trakteer](https://trakteer.id/heyymichii) (for supporters in Indonesia)
 
 ### 🛠️ Building locally
 

@@ -170,7 +170,8 @@ private fun MutableMethod.returnIndices(opcode: Opcode) =
     implementation!!.instructions.withIndex().filter { it.value.opcode == opcode }.map { it.index }.reversed()
 
 /** Version of this patch bundle, from the manifest the build writes into the .mpp (Version attribute). */
-private fun bundleVersion(): String {
+/** Version of this patch bundle, read from the manifest of the .mpp. */
+fun bundleVersion(): String {
     val loader = object {}.javaClass.classLoader
     for (url in loader.getResources("META-INF/MANIFEST.MF")) {
         val attributes = url.openStream().use { java.util.jar.Manifest(it).mainAttributes }

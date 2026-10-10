@@ -39,16 +39,18 @@ final class Downloads {
             return true;
         } catch (Throwable t) {
             Log.e(Settings.TAG, "enqueue failed", t);
-            toast(context, "Download gagal: " + t.getMessage());
+            toast(context, I18n.f("Download failed: %1$s", t.getMessage()));
             return false;
         }
     }
 
     static void toast(Context context, String text) {
-        Toast.makeText(context, text, Toast.LENGTH_SHORT).show();
+        Toast.makeText(context, I18n.tr(text), Toast.LENGTH_SHORT).show();
     }
 
     static void toastStarted(Context context, int count, boolean video) {
-        toast(context, (count == 1 ? "Mengunduh" : "Mengunduh " + count + " file") + " ke " + location(video));
+        toast(context, count == 1
+                ? I18n.f("Downloading to %1$s", location(video))
+                : I18n.f("Downloading %1$s files to %2$s", count, location(video)));
     }
 }

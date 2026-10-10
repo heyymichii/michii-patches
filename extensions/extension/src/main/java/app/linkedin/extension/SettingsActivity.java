@@ -49,9 +49,9 @@ public final class SettingsActivity extends Activity {
     static final String AUTHOR = "heyymichii";
     static final String BRAND = "Michii Patches";
     private static final String MORPHE_WEBSITE = "https://morphe.software";
-    /** Donation links; a row is only shown when its link is set. */
+    /** Donation links: Trakteer is shown in Indonesian, Ko-fi in every other language. */
     private static final String TRAKTEER_URL = "https://trakteer.id/heyymichii";
-    private static final String KOFI_URL = "";
+    private static final String KOFI_URL = "https://ko-fi.com/heyymichii";
 
     // region Settings model
 
@@ -130,21 +130,21 @@ public final class SettingsActivity extends Activity {
 
         if (Settings.isHideAdsIncluded() || Settings.isHidePromotedJobsIncluded()
                 || Settings.isHideSuggestedIncluded() || Settings.isHidePremiumIncluded()) {
-            Category ads = new Category("Iklan & Promosi", IconDrawable.BLOCK);
+            Category ads = new Category("Ads & promotions", IconDrawable.BLOCK);
             if (Settings.isHideAdsIncluded()) {
-                ads.toggle(Settings.HIDE_ADS, true, "Sembunyikan iklan", "Post \"Dipromosikan\" di feed.");
+                ads.toggle(Settings.HIDE_ADS, true, "Hide ads", "\"Promoted\" posts in the feed.");
             }
             if (Settings.isHidePromotedJobsIncluded()) {
-                ads.toggle(Settings.HIDE_PROMOTED_JOBS, true, "Sembunyikan lowongan promosi",
-                        "Lowongan \"Dipromosikan\" di tab Jobs dan pencarian.");
+                ads.toggle(Settings.HIDE_PROMOTED_JOBS, true, "Hide promoted jobs",
+                        "\"Promoted\" jobs in the Jobs tab and search.");
             }
             if (Settings.isHideSuggestedIncluded()) {
-                ads.toggle(Settings.HIDE_SUGGESTED, true, "Sembunyikan post disarankan",
-                        "Post \"Disarankan\" dari luar jaringan.");
+                ads.toggle(Settings.HIDE_SUGGESTED, true, "Hide suggested posts",
+                        "\"Suggested\" posts from outside your network.");
             }
             if (Settings.isHidePremiumIncluded()) {
-                ads.toggle(Settings.HIDE_PREMIUM, true, "Sembunyikan promosi Premium",
-                        "Kartu Premium dan AI di feed, profil, Jobs, dan panel Me.");
+                ads.toggle(Settings.HIDE_PREMIUM, true, "Hide Premium promotions",
+                        "Premium and AI cards in the feed, profiles, Jobs, and the Me panel.");
             }
             categories.add(ads);
         }
@@ -152,35 +152,36 @@ public final class SettingsActivity extends Activity {
         if (Settings.isFeedFiltersIncluded() || Settings.isDisableDoubleTapLikeIncluded()) {
             Category feed = new Category("Feed", IconDrawable.FEED);
             if (Settings.isDisableDoubleTapLikeIncluded()) {
-                feed.toggle(Settings.DISABLE_DOUBLE_TAP_LIKE, true, "Matikan double-tap like",
-                        "Ketuk dua kali tidak lagi memberi like pada post atau foto.");
+                feed.toggle(Settings.DISABLE_DOUBLE_TAP_LIKE, true, "Disable double-tap like",
+                        "Double tapping a post or photo no longer likes it.");
             }
             if (Settings.isFeedFiltersIncluded()) {
-                feed.toggle(Settings.FOCUS_MODE, false, "Mode fokus", "Sembunyikan jumlah like, komentar, dan repost.")
-                        .toggle(Settings.HIDE_CELEBRATIONS, false, "Sembunyikan post perayaan",
-                                "Ulang tahun kerja, posisi baru, dan sejenisnya.")
-                        .toggle(Settings.HIDE_FEED_JOBS, false, "Sembunyikan lowongan di feed",
-                                "Kartu lowongan kerja di home feed.")
-                        .toggle(Settings.HIDE_REPOSTS, false, "Sembunyikan repost",
-                                "Post yang membagikan ulang post orang lain.")
-                        .toggle(Settings.HIDE_VIDEO_POSTS, false, "Sembunyikan post video", "Post yang berisi video.")
-                        .toggle(Settings.HIDE_NEW_POSTS_PILL, false, "Sembunyikan tombol \"Post baru\"",
-                                "Pil yang muncul di atas feed.")
-                        .toggle(Settings.HIDE_TRANSLATION, false, "Sembunyikan \"Lihat terjemahan\"",
-                                "Tombol terjemahan di bawah post berbahasa lain.");
+                feed.toggle(Settings.FOCUS_MODE, false, "Focus mode", "Hide like, comment, and repost counts.")
+                        .toggle(Settings.HIDE_CELEBRATIONS, false, "Hide celebration posts",
+                                "Work anniversaries, new positions, and the like.")
+                        .toggle(Settings.HIDE_FEED_JOBS, false, "Hide jobs in the feed",
+                                "Job cards in the home feed.")
+                        .toggle(Settings.HIDE_REPOSTS, false, "Hide reposts",
+                                "Posts that reshare someone else's post.")
+                        .toggle(Settings.HIDE_VIDEO_POSTS, false, "Hide video posts", "Posts that contain a video.")
+                        .toggle(Settings.HIDE_NEW_POSTS_PILL, false, "Hide the \"New posts\" button",
+                                "The pill that appears at the top of the feed.")
+                        .toggle(Settings.HIDE_TRANSLATION, false, "Hide \"See translation\"",
+                                "The translate button below posts in other languages.");
             }
             categories.add(feed);
         }
 
         if (Settings.isDownloadMediaIncluded()) {
             categories.add(new Category("Download", IconDrawable.DOWNLOAD)
-                    .toggle(Settings.DOWNLOAD_MEDIA, true, "Tombol download",
-                            "Di layar foto, video, foto profil, dan banner. Tekan lama tombolnya untuk "
-                                    + "membuka halaman ini.")
-                    .value("Lokasi simpan", new ValueRow() {
+                    .toggle(Settings.DOWNLOAD_MEDIA, true, "Download button",
+                            "On photo, video, profile photo, and banner screens. Long press the button to open "
+                                    + "this page.")
+                    .value("Save location", new ValueRow() {
                         public String currentValue() {
                             return Settings.downloadSplitByType()
-                                    ? "Foto: " + Downloads.location(false) + "\nVideo: " + Downloads.location(true)
+                                    ? I18n.f("Photos: %1$s\nVideos: %2$s", Downloads.location(false),
+                                            Downloads.location(true))
                                     : Downloads.location(false);
                         }
 
@@ -192,10 +193,10 @@ public final class SettingsActivity extends Activity {
                             return true;
                         }
                     })
-                    .value("Folder utama", new ValueRow() {
+                    .value("Main folder", new ValueRow() {
                         public String currentValue() {
                             return Settings.downloadSplitByType()
-                                    ? "Diatur otomatis (Pisah foto & video aktif)" : Settings.downloadBaseDir();
+                                    ? "Set automatically (Split photos & videos is on)" : Settings.downloadBaseDir();
                         }
 
                         public Runnable onClick() {
@@ -206,10 +207,10 @@ public final class SettingsActivity extends Activity {
                             return !Settings.downloadSplitByType();
                         }
                     })
-                    .value("Nama subfolder", new ValueRow() {
+                    .value("Subfolder name", new ValueRow() {
                         public String currentValue() {
                             String folder = Settings.downloadFolder();
-                            return folder.isEmpty() ? "(langsung di folder utama)" : folder;
+                            return folder.isEmpty() ? "(directly in the main folder)" : folder;
                         }
 
                         public Runnable onClick() {
@@ -220,45 +221,58 @@ public final class SettingsActivity extends Activity {
                             return true;
                         }
                     })
-                    .toggle(Settings.DOWNLOAD_SPLIT_BY_TYPE, false, "Pisah foto & video",
-                            "Foto ke Pictures, video ke Movies.", this::refresh));
+                    .toggle(Settings.DOWNLOAD_SPLIT_BY_TYPE, false, "Split photos & videos",
+                            "Photos go to Pictures, videos to Movies.", this::refresh));
         }
 
         if (Settings.isMessagingIncluded()) {
             categories.add(new Category("Chat", IconDrawable.CHAT)
-                    .toggle(Settings.HIDE_SPONSORED_MESSAGES, true, "Sembunyikan pesan bersponsor",
-                            "Sponsored InMail dan pesan iklan di daftar chat.")
-                    .toggle(Settings.GHOST_MODE, false, "Mode hantu",
-                            "Tidak mengirim status \"sedang mengetik\" dan \"dibaca\" otomatis. Tandai chat sebagai "
-                                    + "dibaca secara manual dari daftar chat kalau perlu."));
+                    .toggle(Settings.HIDE_SPONSORED_MESSAGES, true, "Hide sponsored messages",
+                            "Sponsored InMail and ad messages in the chat list.")
+                    .toggle(Settings.GHOST_MODE, false, "Ghost mode",
+                            "Doesn't send \"typing\" or automatic \"seen\" status. Mark chats as read by hand from "
+                                    + "the chat list when you want to."));
         }
 
         if (Settings.isOpenLinksDirectlyIncluded() || Settings.isBlockTrackingIncluded()
                 || Settings.isSanitizeShareLinksIncluded()) {
-            Category privacy = new Category("Privasi", IconDrawable.SHIELD);
+            Category privacy = new Category("Privacy", IconDrawable.SHIELD);
             if (Settings.isOpenLinksDirectlyIncluded()) {
-                privacy.toggle(Settings.OPEN_LINKS_DIRECTLY, true, "Buka link langsung",
-                        "Lewati halaman peringatan LinkedIn di post dan chat.");
-                privacy.toggle(Settings.RESOLVE_SHORT_LINKS, true, "Buka link pendek lnkd.in langsung",
-                        "Alamat asli link lnkd.in di feed dicari di latar belakang, lalu dibuka langsung.");
+                privacy.toggle(Settings.OPEN_LINKS_DIRECTLY, true, "Open links directly",
+                        "Skip LinkedIn's warning page in posts and chats.");
+                privacy.toggle(Settings.RESOLVE_SHORT_LINKS, true, "Open lnkd.in short links directly",
+                        "The real address of lnkd.in links in the feed is looked up in the background, then opened directly.");
             }
             if (Settings.isSanitizeShareLinksIncluded()) {
-                privacy.toggle(Settings.SANITIZE_SHARE_LINKS, true, "Bersihkan link share",
-                        "Buang parameter pelacak (utm, trk, rcm, ...) saat menyalin atau membagikan link LinkedIn.");
+                privacy.toggle(Settings.SANITIZE_SHARE_LINKS, true, "Clean share links",
+                        "Remove tracking parameters (utm, trk, rcm, ...) when copying or sharing LinkedIn links.");
             }
             if (Settings.isBlockTrackingIncluded()) {
-                privacy.toggle(Settings.BLOCK_TRACKING, false, "Blokir tracking",
-                        "Tidak mengirim sebagian besar event analytics. Matikan kalau ada fitur yang aneh.");
+                privacy.toggle(Settings.BLOCK_TRACKING, false, "Block tracking",
+                        "Doesn't send most analytics events. Turn off if something behaves oddly.");
             }
             categories.add(privacy);
         }
 
-        categories.add(new Category("Lain-lain", IconDrawable.MORE)
-                .action("Ekspor pengaturan", "Salin semua pengaturan ke clipboard sebagai cadangan.", this::exportSettings)
-                .action("Impor pengaturan", "Tempel cadangan pengaturan dari clipboard.", this::importSettings)
-                .action("Kembalikan ke default", "Atur ulang semua pengaturan Michii Patches.", this::resetSettings)
-                .toggle(Settings.DEBUG_LOGGING, false, "Log diagnostik",
-                        "Tulis log (tag LinkedInPatches) untuk membantu memperbaiki patch."));
+        categories.add(new Category("Other", IconDrawable.MORE)
+                .value("Language", new ValueRow() {
+                    public String currentValue() {
+                        return languageNames()[languageIndex()];
+                    }
+
+                    public Runnable onClick() {
+                        return SettingsActivity.this::chooseLanguage;
+                    }
+
+                    public boolean enabled() {
+                        return true;
+                    }
+                })
+                .action("Export settings", "Copy all settings to the clipboard as a backup.", this::exportSettings)
+                .action("Import settings", "Paste a settings backup from the clipboard.", this::importSettings)
+                .action("Reset to defaults", "Reset all Michii Patches settings.", this::resetSettings)
+                .toggle(Settings.DEBUG_LOGGING, false, "Diagnostic logging",
+                        "Write logs (tag LinkedInPatches) to help fix the patches."));
         return categories;
     }
 
@@ -362,7 +376,7 @@ public final class SettingsActivity extends Activity {
         } else {
             titleView.setVisibility(View.VISIBLE);
             searchField.setVisibility(View.GONE);
-            titleView.setText(openCategory == null ? "Michii Patches" : openCategory.title);
+            titleView.setText(openCategory == null ? BRAND : I18n.tr(openCategory.title));
             if (openCategory == null) renderMain();
             else renderItems(openCategory.items, null);
         }
@@ -380,7 +394,7 @@ public final class SettingsActivity extends Activity {
     }
 
     private void renderMain() {
-        content.addView(navRow(IconDrawable.INFO, "Tentang", v -> showAbout()));
+        content.addView(navRow(IconDrawable.INFO, "About", v -> showAbout()));
         for (Category category : categories) {
             content.addView(navRow(category.icon, category.title, v -> {
                 openCategory = category;
@@ -403,8 +417,8 @@ public final class SettingsActivity extends Activity {
         List<String> names = new ArrayList<>();
         for (Category category : categories) {
             for (Item item : category.items) {
-                String haystack = (item.title + " " + (item.summary == null ? "" : item.summary) + " "
-                        + category.title).toLowerCase(Locale.ROOT);
+                String haystack = (I18n.tr(item.title) + " " + (item.summary == null ? "" : I18n.tr(item.summary)) + " "
+                        + I18n.tr(category.title)).toLowerCase(Locale.ROOT);
                 if (q.isEmpty() || haystack.contains(q)) {
                     found.add(item);
                     names.add(category.title);
@@ -412,7 +426,7 @@ public final class SettingsActivity extends Activity {
             }
         }
         if (found.isEmpty()) {
-            TextView empty = text("Tidak ada pengaturan yang cocok.", 15, textSecondary, false);
+            TextView empty = text("No matching settings.", 15, textSecondary, false);
             empty.setGravity(Gravity.CENTER);
             empty.setPadding(dp(24), dp(48), dp(24), 0);
             content.addView(empty);
@@ -431,7 +445,7 @@ public final class SettingsActivity extends Activity {
         bar.setGravity(Gravity.CENTER_VERTICAL);
         bar.setPadding(dp(4), dp(6), dp(4), dp(6));
 
-        ImageButton back = iconButton(IconDrawable.ARROW_BACK, "Kembali");
+        ImageButton back = iconButton(IconDrawable.ARROW_BACK, "Back");
         back.setOnClickListener(v -> onBackPressed());
         bar.addView(back);
 
@@ -440,7 +454,7 @@ public final class SettingsActivity extends Activity {
         bar.addView(titleView, new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT, 1f));
 
         searchField = new EditText(this);
-        searchField.setHint("Cari pengaturan");
+        searchField.setHint(I18n.tr("Search settings"));
         searchField.setSingleLine(true);
         searchField.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS);
         searchField.setTextColor(textPrimary);
@@ -465,7 +479,7 @@ public final class SettingsActivity extends Activity {
         });
         bar.addView(searchField, new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT, 1f));
 
-        searchButton = iconButton(IconDrawable.SEARCH, "Cari");
+        searchButton = iconButton(IconDrawable.SEARCH, "Search");
         searchButton.setOnClickListener(v -> setSearching(!searching));
         bar.addView(searchButton);
         return bar;
@@ -561,7 +575,7 @@ public final class SettingsActivity extends Activity {
         LinearLayout texts = new LinearLayout(this);
         texts.setOrientation(LinearLayout.VERTICAL);
         if (categoryName != null) {
-            TextView category = text(categoryName.toUpperCase(Locale.ROOT), 11, accent, true);
+            TextView category = text(I18n.tr(categoryName).toUpperCase(Locale.ROOT), 11, accent, true);
             category.setLetterSpacing(0.06f);
             texts.addView(category);
         }
@@ -604,59 +618,61 @@ public final class SettingsActivity extends Activity {
         update.setGravity(Gravity.CENTER_HORIZONTAL);
         update.setPadding(dp(20), dp(16), dp(20), dp(16));
         update.setBackground(outlined());
-        TextView updateTitle = text("Memeriksa pembaruan…", 17, accent, true);
+        TextView updateTitle = text("Checking for updates…", 17, accent, true);
         updateTitle.setGravity(Gravity.CENTER);
         update.addView(updateTitle);
-        TextView updateBody = text("Kamu memakai " + BRAND + " versi " + Settings.patchesVersion(), 15,
+        TextView updateBody = text(I18n.f("You are using %1$s version %2$s", BRAND, Settings.patchesVersion()), 15,
                 textSecondary, false);
         updateBody.setGravity(Gravity.CENTER);
         updateBody.setPadding(0, dp(6), 0, 0);
         update.addView(updateBody);
         box.addView(update, matchWidth());
         String installed = BRAND + " " + Settings.patchesVersion() + "  •  LinkedIn " + appVersion()
-                + "\nDibuat oleh " + AUTHOR;
+                + "\n" + I18n.f("Made by %1$s", AUTHOR);
         UpdateChecker.check((status, latest) -> {
             switch (status) {
                 case UPDATE_AVAILABLE:
-                    updateTitle.setText("Pembaruan tersedia");
-                    updateBody.setText("Kamu memakai versi " + Settings.patchesVersion() + ".\n\nPembaruan tersedia: "
-                            + latest + "\n\nUntuk memperbarui, patch ulang LinkedIn dengan Morphe Manager.");
+                    updateTitle.setText(I18n.tr("Update available"));
+                    updateBody.setText(I18n.f("You are using version %1$s.\n\nUpdate available: %2$s\n\n"
+                            + "To update, patch LinkedIn again with Morphe Manager.", Settings.patchesVersion(), latest));
                     break;
                 case UP_TO_DATE:
-                    updateTitle.setText("Sudah versi terbaru");
+                    updateTitle.setText(I18n.tr("Up to date"));
                     updateBody.setText(installed);
                     break;
                 case NO_RELEASE:
-                    updateTitle.setText("Belum ada rilis stabil");
-                    updateBody.setText(installed + "\n\nBelum ada rilis stabil di GitHub untuk dibandingkan.");
+                    updateTitle.setText(I18n.tr("No stable release yet"));
+                    updateBody.setText(installed + "\n\n"
+                            + I18n.tr("There is no stable release on GitHub to compare with yet."));
                     break;
                 default:
-                    updateTitle.setText("Tidak bisa terhubung");
-                    updateBody.setText(installed + "\n\nPeriksa koneksi internet, lalu buka halaman ini lagi.");
+                    updateTitle.setText(I18n.tr("Can't connect"));
+                    updateBody.setText(installed + "\n\n"
+                            + I18n.tr("Check your internet connection, then open this page again."));
                     break;
             }
         });
 
-        box.addView(sectionTitle("Tautan resmi"));
+        box.addView(sectionTitle("Official links"));
         LinearLayout links = new LinearLayout(this);
         links.setOrientation(LinearLayout.VERTICAL);
         links.setBackground(outlined());
         String repo = "https://github.com/" + UpdateChecker.REPO;
-        if (!TRAKTEER_URL.isEmpty()) {
-            addLink(links, IconDrawable.HEART, "Donasi (Trakteer)", v -> openUrl(TRAKTEER_URL));
-        }
-        if (!KOFI_URL.isEmpty()) {
+        // Trakteer takes Indonesian payment methods, Ko-fi international ones.
+        if ("id".equals(I18n.language())) {
+            addLink(links, IconDrawable.HEART, "Donate (Trakteer)", v -> openUrl(TRAKTEER_URL));
+        } else {
             addLink(links, IconDrawable.HEART, "Donate (Ko-fi)", v -> openUrl(KOFI_URL));
         }
         addLink(links, IconDrawable.CODE, "GitHub", v -> openUrl(repo));
         addLink(links, IconDrawable.HISTORY, "Changelog", v -> openUrl(repo + "/releases"));
-        addLink(links, IconDrawable.BUG, "Laporkan bug", v -> openUrl(repo + "/issues/new/choose"));
-        addLink(links, IconDrawable.CHECKLIST, "Status patch", v -> showPatchStatus());
-        addLink(links, IconDrawable.PEOPLE, "Kredit", v -> showCredits());
+        addLink(links, IconDrawable.BUG, "Report a bug", v -> openUrl(repo + "/issues/new/choose"));
+        addLink(links, IconDrawable.CHECKLIST, "Patch status", v -> showPatchStatus());
+        addLink(links, IconDrawable.PEOPLE, "Credits", v -> showCredits());
         box.addView(links, matchWidth());
 
-        TextView disclaimer = text("Bukan aplikasi resmi LinkedIn. " + BRAND + " bukan bagian dari proyek Morphe.",
-                12, textSecondary, false);
+        TextView disclaimer = text(I18n.f("Not an official LinkedIn app. %1$s is not part of the Morphe project.",
+                BRAND), 12, textSecondary, false);
         disclaimer.setGravity(Gravity.CENTER);
         disclaimer.setPadding(0, dp(16), 0, 0);
         box.addView(disclaimer);
@@ -666,7 +682,7 @@ public final class SettingsActivity extends Activity {
 
     /** Which patches were applied when this LinkedIn was patched. */
     private void showPatchStatus() {
-        LinearLayout box = cardBox("Status patch", "Patch yang dipasang saat LinkedIn ini di-patch.");
+        LinearLayout box = cardBox("Patch status", "Patches applied when this LinkedIn was patched.");
         LinearLayout list = new LinearLayout(this);
         list.setOrientation(LinearLayout.VERTICAL);
         list.setBackground(outlined());
@@ -693,7 +709,7 @@ public final class SettingsActivity extends Activity {
             row.setPadding(dp(18), dp(14), dp(18), dp(14));
             row.addView(text((String) patches[i][0], 16, textPrimary, false),
                     new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT, 1f));
-            TextView state = text(included ? "Terpasang" : "Tidak dipasang", 14,
+            TextView state = text(included ? "Applied" : "Not applied", 14,
                     included ? accent : textSecondary, true);
             row.addView(state);
             list.addView(row);
@@ -703,13 +719,13 @@ public final class SettingsActivity extends Activity {
     }
 
     private void showCredits() {
-        LinearLayout box = cardBox("Kredit", "Orang dan proyek di balik " + BRAND + ".");
-        box.addView(creditCard(IconDrawable.PEOPLE, AUTHOR, "Pembuat " + BRAND,
+        LinearLayout box = cardBox("Credits", I18n.f("The people and projects behind %1$s.", BRAND));
+        box.addView(creditCard(IconDrawable.PEOPLE, AUTHOR, I18n.f("Creator of %1$s", BRAND),
                 "github.com/heyymichii", "https://github.com/heyymichii"));
-        box.addView(creditCard(IconDrawable.CODE, "Morphe", "Patcher, Morphe Manager, dan template patch",
+        box.addView(creditCard(IconDrawable.CODE, "Morphe", "Patcher, Morphe Manager, and the patch template",
                 "morphe.software", MORPHE_WEBSITE));
-        box.addView(creditCard(IconDrawable.INFO, "LinkedIn", "Aplikasi asli. " + BRAND
-                + " tidak berafiliasi dengan LinkedIn.", null, null));
+        box.addView(creditCard(IconDrawable.INFO, "LinkedIn",
+                I18n.f("The original app. %1$s is not affiliated with LinkedIn.", BRAND), null, null));
         showCard(box);
     }
 
@@ -823,8 +839,50 @@ public final class SettingsActivity extends Activity {
         try {
             startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(url)));
         } catch (Exception e) {
-            Downloads.toast(this, "Tidak bisa membuka link");
+            Downloads.toast(this, "Can't open the link");
         }
+    }
+
+    // endregion
+
+    // region Language
+
+    /** "auto" followed by every language that has a translation file. */
+    private static String[] languageCodes() {
+        List<String> codes = new ArrayList<>();
+        codes.add(I18n.LANGUAGE_AUTO);
+        codes.addAll(Translations.LANGUAGES.keySet());
+        return codes.toArray(new String[0]);
+    }
+
+    /** Language names are shown in their own language; only the automatic entry is translated. */
+    private static String[] languageNames() {
+        String[] codes = languageCodes();
+        String[] names = new String[codes.length];
+        names[0] = I18n.tr("Automatic (device language)");
+        for (int i = 1; i < codes.length; i++) names[i] = Translations.LANGUAGES.get(codes[i]);
+        return names;
+    }
+
+    private int languageIndex() {
+        String current = Settings.language();
+        String[] codes = languageCodes();
+        for (int i = 0; i < codes.length; i++) if (codes[i].equals(current)) return i;
+        return 0;
+    }
+
+    private void chooseLanguage() {
+        String[] codes = languageCodes();
+        new AlertDialog.Builder(this, dialogTheme())
+                .setTitle(I18n.tr("Language"))
+                .setSingleChoiceItems(languageNames(), languageIndex(), (dialog, which) -> {
+                    Settings.setString(Settings.LANGUAGE, codes[which]);
+                    dialog.dismiss();
+                    // Rebuild the screen so every text uses the new language.
+                    recreate();
+                })
+                .setNegativeButton(I18n.tr("Cancel"), null)
+                .show();
     }
 
     // endregion
@@ -835,15 +893,15 @@ public final class SettingsActivity extends Activity {
         try {
             ClipboardManager clipboard = (ClipboardManager) getSystemService(CLIPBOARD_SERVICE);
             clipboard.setPrimaryClip(ClipData.newPlainText(BRAND, Settings.exportJson()));
-            Downloads.toast(this, "Pengaturan disalin ke clipboard");
+            Downloads.toast(this, "Settings copied to the clipboard");
         } catch (Exception e) {
-            Downloads.toast(this, "Ekspor gagal: " + e.getMessage());
+            Downloads.toast(this, I18n.f("Export failed: %1$s", e.getMessage()));
         }
     }
 
     private void importSettings() {
         EditText input = new EditText(this);
-        input.setHint("Tempel cadangan pengaturan di sini");
+        input.setHint(I18n.tr("Paste a settings backup here"));
         input.setMinLines(4);
         input.setGravity(Gravity.TOP);
         ClipboardManager clipboard = (ClipboardManager) getSystemService(CLIPBOARD_SERVICE);
@@ -856,33 +914,33 @@ public final class SettingsActivity extends Activity {
         box.addView(input, matchWidth());
 
         new AlertDialog.Builder(this, dialogTheme())
-                .setTitle("Impor pengaturan")
+                .setTitle(I18n.tr("Import settings"))
                 .setView(box)
-                .setPositiveButton("Impor", (dialog, which) -> {
+                .setPositiveButton(I18n.tr("Import"), (dialog, which) -> {
                     try {
                         int count = Settings.importJson(input.getText().toString());
-                        Downloads.toast(this, count + " pengaturan diimpor");
+                        Downloads.toast(this, I18n.f("%1$s settings imported", count));
                         refresh();
                         showRestartBanner();
                     } catch (Exception e) {
-                        Downloads.toast(this, "Cadangan tidak valid");
+                        Downloads.toast(this, "Invalid backup");
                     }
                 })
-                .setNegativeButton("Batal", null)
+                .setNegativeButton(I18n.tr("Cancel"), null)
                 .show();
     }
 
     private void resetSettings() {
         new AlertDialog.Builder(this, dialogTheme())
-                .setTitle("Kembalikan ke default?")
-                .setMessage("Semua pengaturan " + BRAND + " akan diatur ulang, termasuk lokasi download.")
-                .setPositiveButton("Atur ulang", (dialog, which) -> {
+                .setTitle(I18n.tr("Reset to defaults?"))
+                .setMessage(I18n.f("All %1$s settings will be reset, including the download location.", BRAND))
+                .setPositiveButton(I18n.tr("Reset"), (dialog, which) -> {
                     Settings.resetAll();
-                    Downloads.toast(this, "Pengaturan dikembalikan ke default");
+                    Downloads.toast(this, "Settings reset to defaults");
                     refresh();
                     showRestartBanner();
                 })
-                .setNegativeButton("Batal", null)
+                .setNegativeButton(I18n.tr("Cancel"), null)
                 .show();
     }
 
@@ -897,13 +955,13 @@ public final class SettingsActivity extends Activity {
         for (int i = 0; i < dirs.length; i++) if (dirs[i].equals(current)) checked = i;
 
         new AlertDialog.Builder(this, dialogTheme())
-                .setTitle("Folder utama")
+                .setTitle(I18n.tr("Main folder"))
                 .setSingleChoiceItems(dirs, checked, (dialog, which) -> {
                     Settings.setString(Settings.DOWNLOAD_BASE_DIR, dirs[which]);
                     refresh();
                     dialog.dismiss();
                 })
-                .setNegativeButton("Batal", null)
+                .setNegativeButton(I18n.tr("Cancel"), null)
                 .show();
     }
 
@@ -915,8 +973,8 @@ public final class SettingsActivity extends Activity {
         input.setHint(Settings.DEFAULT_DOWNLOAD_FOLDER);
         input.setSelection(input.getText().length());
 
-        TextView help = text("Pakai \"/\" untuk subfolder bertingkat, misalnya LinkedIn/Media. "
-                + "Kosongkan untuk menyimpan langsung di folder utama.", 13, textSecondary, false);
+        TextView help = text("Use \"/\" for nested folders, for example LinkedIn/Media. "
+                + "Leave empty to save directly in the main folder.", 13, textSecondary, false);
         help.setPadding(0, dp(8), 0, 0);
 
         LinearLayout box = new LinearLayout(this);
@@ -926,17 +984,17 @@ public final class SettingsActivity extends Activity {
         box.addView(help);
 
         new AlertDialog.Builder(this, dialogTheme())
-                .setTitle("Nama subfolder")
+                .setTitle(I18n.tr("Subfolder name"))
                 .setView(box)
-                .setPositiveButton("Simpan", (dialog, which) -> {
+                .setPositiveButton(I18n.tr("Save"), (dialog, which) -> {
                     Settings.setString(Settings.DOWNLOAD_FOLDER, Settings.sanitizeFolder(input.getText().toString()));
                     refresh();
                 })
-                .setNeutralButton("Default", (dialog, which) -> {
+                .setNeutralButton(I18n.tr("Default"), (dialog, which) -> {
                     Settings.setString(Settings.DOWNLOAD_FOLDER, Settings.DEFAULT_DOWNLOAD_FOLDER);
                     refresh();
                 })
-                .setNegativeButton("Batal", null)
+                .setNegativeButton(I18n.tr("Cancel"), null)
                 .show();
     }
 
@@ -952,10 +1010,10 @@ public final class SettingsActivity extends Activity {
         banner.setBackground(rounded(dark ? 0xFF262626 : 0xFF202124, 16));
         banner.setElevation(dp(8));
 
-        TextView message = text("Buka ulang LinkedIn untuk menerapkan semua perubahan.", 14, 0xFFFFFFFF, false);
+        TextView message = text("Restart LinkedIn to apply all changes.", 14, 0xFFFFFFFF, false);
         banner.addView(message, new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT, 1f));
 
-        TextView action = text("BUKA ULANG", 14, 0xFF2DBCB1, true);
+        TextView action = text("RESTART", 14, 0xFF2DBCB1, true);
         action.setPadding(dp(12), dp(10), dp(12), dp(10));
         action.setBackground(ripple(false));
         action.setOnClickListener(v -> restartApp());
@@ -981,7 +1039,7 @@ public final class SettingsActivity extends Activity {
         ImageButton button = new ImageButton(this);
         button.setImageDrawable(new IconDrawable(icon, textPrimary));
         button.setBackground(ripple(true));
-        button.setContentDescription(description);
+        button.setContentDescription(I18n.tr(description));
         int pad = dp(13);
         button.setPadding(pad, pad, pad, pad);
         button.setLayoutParams(new LinearLayout.LayoutParams(dp(50), dp(50)));
@@ -990,7 +1048,7 @@ public final class SettingsActivity extends Activity {
 
     private TextView text(String value, int sp, int color, boolean bold) {
         TextView view = new TextView(this);
-        view.setText(value);
+        view.setText(I18n.tr(value));
         view.setTextSize(TypedValue.COMPLEX_UNIT_SP, sp);
         view.setTextColor(color);
         if (bold) view.setTypeface(Typeface.create("sans-serif-medium", Typeface.NORMAL));
