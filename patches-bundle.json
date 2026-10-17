@@ -1,7 +1,7 @@
 {
-  "created_at": "2026-10-16T18:51:20",
-  "description": "## [1.1.1](https://github.com/heyymichii/michii-patches/compare/v1.1.0...v1.1.1) (2026-10-16)\n\n### 🐛 Bug Fixes\n\n* Support LinkedIn 4.1.1261 ([dfca453](https://github.com/heyymichii/michii-patches/commit/dfca4536dc321d46136675355b0cb4b8492527b7)), closes [#5](https://github.com/heyymichii/michii-patches/issues/5)",
-  "download_url": "https://github.com/heyymichii/michii-patches/releases/download/v1.1.1/patches-1.1.1.mpp",
+  "created_at": "2026-10-17T18:24:24",
+  "description": "## [1.2.0-dev.3](https://github.com/heyymichii/michii-patches/compare/v1.2.0-dev.2...v1.2.0-dev.3) (2026-10-17)\n\n### 🐛 Bug Fixes\n\n* Apply Material You to the Compose feed ([263e1d9](https://github.com/heyymichii/michii-patches/commit/263e1d919977905aa6e106985b9550cb60ad6fd3))",
+  "download_url": "https://github.com/heyymichii/michii-patches/releases/download/v1.2.0-dev.3/patches-1.2.0-dev.3.mpp",
   "signature_download_url": "",
-  "version": "1.1.1"
+  "version": "1.2.0-dev.3"
 }
