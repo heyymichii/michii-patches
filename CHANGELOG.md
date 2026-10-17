@@ -1,3 +1,15 @@
+## [1.2.0-dev.2](https://github.com/heyymichii/michii-patches/compare/v1.2.0-dev.1...v1.2.0-dev.2) (2026-10-17)
+
+### 🐛 Bug Fixes
+
+* Tint backgrounds with Material You ([26fbcb4](https://github.com/heyymichii/michii-patches/commit/26fbcb4609caf1ffbee3c6f47f0efa22fa822e8e))
+
+## [1.2.0-dev.1](https://github.com/heyymichii/michii-patches/compare/v1.1.1...v1.2.0-dev.1) (2026-10-16)
+
+### ✨ New Features
+
+* Add Material You patch ([4c14ce2](https://github.com/heyymichii/michii-patches/commit/4c14ce2299163d770e15bf61075c678d520befd5)), closes [#6](https://github.com/heyymichii/michii-patches/issues/6)
+
 ## [1.1.1](https://github.com/heyymichii/michii-patches/compare/v1.1.0...v1.1.1) (2026-10-16)
 
 ### 🐛 Bug Fixes
