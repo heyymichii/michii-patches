@@ -5,6 +5,20 @@ LinkedIn patches for use with [Morphe](https://morphe.software), by **heyymichii
 Michii Patches is an independent project. It is not affiliated with, endorsed by, or part of the
 Morphe project or LinkedIn.
 
+## 🚧 Next Update
+
+The next Michii Patches update is in progress! 🎉
+
+I'm working on several improvements, including:
+
+- 🐛 **Bug fixes**: Fixing reported issues and improving existing patches.
+- 🎨 **Patch improvements**: Refining current patches and addressing compatibility issues.
+- 🧩 **More app patches**: Expanding Michii Patches with patches for other apps.
+
+I'm currently quite busy with my real-life work, so development may take a little longer than usual. I'll continue working on these improvements as time allows.
+
+Thanks for your patience, feedback, and support! ❤️
+
 ## ❓ About
 
 Michii Patches removes ads and clutter from LinkedIn and adds features the app does not have:
@@ -40,8 +54,9 @@ The app icon shortcut is added the first time LinkedIn opens after patching.
 Other versions are marked experimental and may not work.
 
 > [!NOTE]
-> **Signing in with Google doesn't work** in patched LinkedIn, because Google checks the app's signature.
-> Sign in with your e-mail and password instead. If you signed up with Google and don't have a password,
+> **Signing in with Google** needs the **GmsCore support** patch and [microG RE](https://github.com/MorpheApp/microg-RE)
+> installed and signed in to your Google account, because Google checks the app's signature.
+> Without it, sign in with your e-mail and password. If you signed up with Google and don't have a password,
 > set one first on [linkedin.com](https://www.linkedin.com/checkpoint/rp/request-password-reset) ("Forgot password").
 
 ### How to use these patches
@@ -55,9 +70,9 @@ Then patch LinkedIn with Morphe Manager. Do not share patched APKs; share this p
 ## 🩹 Patches list
 
 <!-- PATCHES_START EXPANDED -->
-> **[v1.1.1](https://github.com/heyymichii/michii-patches/releases/tag/v1.1.1)**&nbsp;&nbsp;•&nbsp;&nbsp;`main`&nbsp;&nbsp;•&nbsp;&nbsp;11 patches total
+> **[v1.2.0-dev.3](https://github.com/heyymichii/michii-patches/releases/tag/v1.2.0-dev.3)**&nbsp;&nbsp;•&nbsp;&nbsp;`dev`&nbsp;&nbsp;•&nbsp;&nbsp;12 patches total
 <details open>
-<summary>📦 LinkedIn&nbsp;&nbsp;•&nbsp;&nbsp;11 patches</summary>
+<summary>📦 LinkedIn&nbsp;&nbsp;•&nbsp;&nbsp;12 patches</summary>
 <br>
 
 **🎯 Supported versions:**
@@ -75,6 +90,7 @@ Then patch LinkedIn with Morphe Manager. Do not share patched APKs; share this p
 | [Hide ads](#hide-ads) | Removes promoted (sponsored) posts from the feed. |  |
 | [Hide promoted jobs](#hide-promoted-jobs) | Removes promoted job listings from the Jobs tab and job search. |  |
 | [Hide suggested posts](#hide-suggested-posts) | Removes "Suggested" posts from outside your network from the feed. |  |
+| [Material You](#material-you) | Uses your wallpaper colors (Android 12+) for accents and backgrounds instead of LinkedIn blue and gray. Some screens drawn by LinkedIn's servers may keep their own colors. |  |
 | [Messaging](#messaging) | Hides sponsored messages, and adds an optional ghost mode that does not send typing indicators or read status. |  |
 | [Open links directly](#open-links-directly) | Opens external links without LinkedIn's safety/go warning page. |  |
 | [Sanitize share links](#sanitize-share-links) | Removes tracking parameters from LinkedIn links when they are copied or shared. |  |
