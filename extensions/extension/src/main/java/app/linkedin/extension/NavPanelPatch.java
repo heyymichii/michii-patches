@@ -33,19 +33,22 @@ public final class NavPanelPatch {
             Object savedPosts = sectionType.getField("SAVED_POSTS").get(null);
             Object chevronRight = chevronType.getField("RIGHT").get(null);
 
-            for (Object item : list) {
+            ArrayList<Object> result = new ArrayList<>(list);
+            if (Settings.hideGames()) removeGames(result, sectionType);
+
+            for (Object item : result) {
                 if (viewData.isInstance(item) && TITLE.equals(String.valueOf(Reflect.get(item, "title")))) {
-                    return list;
+                    return result;
                 }
             }
 
             Object entry = newSection(viewData, savedPosts, chevronRight);
 
-            ArrayList<Object> result = new ArrayList<>(list);
+            // "Saved posts" is a section V2 in older builds and a plain section in 4.1.1261; both have a sectionType.
             int index = result.size();
             for (int i = 0; i < result.size(); i++) {
                 Object item = result.get(i);
-                if (viewData.isInstance(item) && Reflect.get(item, "sectionType") == savedPosts) {
+                if (Reflect.get(item, "sectionType") == savedPosts) {
                     index = i + 1;
                     break;
                 }
@@ -55,6 +58,26 @@ public final class NavPanelPatch {
         } catch (Throwable t) {
             Diagnostics.error("addSettingsItem failed", t);
             return list;
+        }
+    }
+
+    /**
+     * Removes the "Games" section (any panel item whose sectionType is GAMES), for "Hide games". Builds without
+     * it are left as they are.
+     */
+    private static void removeGames(List<Object> items, Class<?> sectionType) {
+        Object games;
+        try {
+            games = sectionType.getField("GAMES").get(null);
+        } catch (ReflectiveOperationException e) {
+            return;
+        }
+        for (int i = items.size() - 1; i >= 0; i--) {
+            Object item = items.get(i);
+            if (Reflect.get(item, "sectionType") == games) {
+                items.remove(i);
+                Settings.debugLog("hide games section");
+            }
         }
     }
 

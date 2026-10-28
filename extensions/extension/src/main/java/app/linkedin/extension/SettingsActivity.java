@@ -165,7 +165,13 @@ public final class SettingsActivity extends Activity {
                                 "Job cards in the home feed.")
                         .toggle(Settings.HIDE_REPOSTS, false, "Hide reposts",
                                 "Posts that reshare someone else's post.")
+                        .toggle(Settings.HIDE_ACTIVITY_POSTS, false, "Hide posts from others' activity",
+                                "Posts shown because someone liked, commented on, or reacted to them.")
+                        .toggle(Settings.HIDE_RECOMMENDATIONS, false, "Hide \"Recommended for you\"",
+                                "Suggestions of people and pages to follow in the feed.")
                         .toggle(Settings.HIDE_VIDEO_POSTS, false, "Hide video posts", "Posts that contain a video.")
+                        .toggle(Settings.HIDE_GAMES, false, "Hide games",
+                                "LinkedIn's puzzle games in the Me panel, search, and feed.")
                         .toggle(Settings.HIDE_NEW_POSTS_PILL, false, "Hide the \"New posts\" button",
                                 "The pill that appears at the top of the feed.")
                         .toggle(Settings.HIDE_TRANSLATION, false, "Hide \"See translation\"",
