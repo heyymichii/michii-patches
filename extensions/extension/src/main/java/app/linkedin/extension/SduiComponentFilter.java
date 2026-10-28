@@ -142,8 +142,9 @@ public final class SduiComponentFilter {
 
     /**
      * Posts shown because someone liked, commented on, or reacted to them have a header above the author ("X likes
-     * this") whose text links to that person's profile. The header comes before the author in the payload, so a
-     * profile action between the two belongs to the header. Matched by structure, so it works in every language.
+     * this") whose text links to that person's, company's or school's page. The header comes before the author in
+     * the payload, so a page action between the two belongs to the header. Matched by structure, so it works in
+     * every language.
      */
     private static boolean isActivityPost(byte[] payload) {
         if (!ProtoScanner.containsAscii(payload, "feed-header")) return false;
@@ -151,7 +152,10 @@ public final class SduiComponentFilter {
         int header = strings.indexOf("feed-header");
         int author = strings.indexOf("feed-actor");
         if (header < 0 || author < header) return false;
-        return strings.subList(header, author).contains("viewMember");
+        for (String s : strings.subList(header, author)) {
+            if (s.equals("viewMember") || s.equals("viewCompany") || s.equals("viewSchool")) return true;
+        }
+        return false;
     }
 
     /**
