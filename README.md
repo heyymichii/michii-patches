@@ -6,7 +6,7 @@
 
 [![Latest release](https://img.shields.io/github/v/release/heyymichii/michii-patches?style=for-the-badge&label=release&color=0a66c2)](https://github.com/heyymichii/michii-patches/releases/latest)
 [![License](https://img.shields.io/github/license/heyymichii/michii-patches?style=for-the-badge&color=2dbcb1)](LICENSE)
-[![Crowdin](https://badges.crowdin.net/michii-patches/localized.svg)](https://crowdin.com/project/michii-patches)
+[![Translate on Crowdin](https://img.shields.io/badge/translate-Crowdin-263238?style=for-the-badge&logo=crowdin&logoColor=white)](https://crowdin.com/project/michii-patches)
 
 **[➕ Add to Morphe](https://morphe.software/add-source?github=heyymichii/michii-patches)** ·
 **[📣 Announcements](https://github.com/heyymichii/michii-patches/discussions/categories/announcements)** ·
