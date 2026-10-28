@@ -92,7 +92,30 @@ public final class MaterialYou {
         }
     }
 
+    /** Packed Compose black, for "AMOLED black". */
+    private static final long BLACK = 0xFF000000L << 32;
+    /** LinkedIn's dark backgrounds (0xRRGGBB): cards, containers and tinted rows. */
+    private static final int[] DARK_BACKGROUNDS = {0x1B1F23, 0x1D2226, 0x293037, 0x293138};
+
     private MaterialYou() {
+    }
+
+    /** Whether "AMOLED black" turns this packed Compose Color, a dark background, black. */
+    private static boolean isAmoledDark(long packed) {
+        // sRGB Compose colors keep the ARGB value in the upper 32 bits and color space 0 in the lower ones.
+        if ((packed & 0x3F) != 0 || !Settings.amoledBlack()) return false;
+        int argb = (int) (packed >>> 32);
+        return (argb >>> 24) == 0xFF && luminance(argb) < 128;
+    }
+
+    /** Whether "AMOLED black" turns this ARGB color, one of LinkedIn's dark backgrounds, black. */
+    private static boolean isAmoledBackground(long argb) {
+        if ((argb >>> 24) != 0xFF || !Settings.amoledBlack()) return false;
+        int rgb = (int) (argb & 0xFFFFFF);
+        for (int dark : DARK_BACKGROUNDS) {
+            if (rgb == dark) return true;
+        }
+        return false;
     }
 
     /**
@@ -100,6 +123,7 @@ public final class MaterialYou {
      * packed Compose Color: a light card becomes the light neutral, a dark one the dark neutral.
      */
     public static long surface(long packed) {
+        if (isAmoledDark(packed)) return BLACK;
         if (!Settings.materialYou()) return packed;
         return tone(packed, LIGHT_SURFACE, DARK_SURFACE);
     }
@@ -111,6 +135,7 @@ public final class MaterialYou {
      */
     public static long canvas(long packed, long card) {
         if (packed == card) return surface(card);
+        if (isAmoledDark(packed)) return BLACK;
         if (!Settings.materialYou()) return packed;
         return tone(packed, LIGHT_CANVAS, DARK_CANVAS);
     }
@@ -136,6 +161,7 @@ public final class MaterialYou {
      * container become the card colors.
      */
     public static int bar(int color) {
+        if (color == 0xFF1D2226 && Settings.amoledBlack()) return 0xFF000000;
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.S || !Settings.materialYou()) return color;
         if (color == 0xFFFFFFFF) return resources().getColor(LIGHT_SURFACE, null);
         if (color == 0xFF1D2226) return resources().getColor(DARK_SURFACE, null);
@@ -199,6 +225,7 @@ public final class MaterialYou {
 
     /** Injected after each background constant of the Compose themes: an ARGB value as used by Color(long). */
     public static long background(long argb) {
+        if (isAmoledBackground(argb)) return 0xFF000000L;
         return Settings.materialYou() ? map(BACKGROUNDS, argb) : argb;
     }
 
@@ -228,8 +255,10 @@ public final class MaterialYou {
      * other blues the accent tone of the nearest lightness.
      */
     public static Map<Object, Object> sduiColors(Map<Object, Object> overrides) {
-        if (overrides == null || overrides.isEmpty() || Build.VERSION.SDK_INT < Build.VERSION_CODES.S
-                || !Settings.materialYou()) return overrides;
+        if (overrides == null || overrides.isEmpty()) return overrides;
+        if ((Build.VERSION.SDK_INT < Build.VERSION_CODES.S || !Settings.materialYou()) && !Settings.amoledBlack()) {
+            return overrides;
+        }
         try {
             Map<Object, Object> result = new LinkedHashMap<>(overrides);
             Method box = null;
@@ -257,7 +286,7 @@ public final class MaterialYou {
      * palette colors the server sends, which skip the theme.
      */
     public static Object sduiUIColor(Object color) {
-        if (color == null || Build.VERSION.SDK_INT < Build.VERSION_CODES.S) return color;
+        if (color == null || (Build.VERSION.SDK_INT < Build.VERSION_CODES.S && !Settings.amoledBlack())) return color;
         try {
             long packed = (long) Reflect.get(color, "value");
             long mapped = sduiColor(packed);
@@ -275,7 +304,8 @@ public final class MaterialYou {
         long argb = packed >>> 32;
         int rgb = (int) (argb & 0xFFFFFF);
         if (rgb == WARM_GRAY_30 && (argb >>> 24) == 0xFF) return mvpCanvas(packed);
-        if (!Settings.materialYou()) return packed;
+        if (isAmoledBackground(argb)) return BLACK;
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.S || !Settings.materialYou()) return packed;
         if ((argb >>> 24) != 0xFF) return translucentAccent(packed);
         long mapped = argb;
         if (ACCENTS.containsKey(rgb)) mapped = map(ACCENTS, argb);
@@ -298,6 +328,7 @@ public final class MaterialYou {
             long card = isLight(packed) ? 0xFFFFFFFFL << 32 : 0xFF1D2226L << 32;
             return surface(card);
         }
+        if (isAmoledDark(packed)) return BLACK;
         if (!Settings.materialYou()) return packed;
         return tone(packed, LIGHT_CANVAS, DARK_CANVAS);
     }

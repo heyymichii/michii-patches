@@ -190,6 +190,9 @@ public final class SettingsActivity extends Activity {
                 appearance.toggle(Settings.MATERIAL_YOU, true, "Material You",
                         "Your wallpaper's colors for accents, backgrounds, cards and borders. Restart LinkedIn to "
                                 + "apply. Older screens keep the colors chosen when patching.");
+                appearance.toggle(Settings.AMOLED_BLACK, false, "AMOLED black",
+                        "Pure black backgrounds and cards in dark mode, to save battery on AMOLED screens. Restart "
+                                + "LinkedIn to apply.");
             }
             categories.add(appearance);
         }

@@ -39,6 +39,7 @@ public final class Settings {
     static final String DISABLE_DOUBLE_TAP_LIKE = "disable_double_tap_like";
     static final String REMOVE_GAPS_AND_DIVIDERS = "remove_gaps_and_dividers";
     static final String MATERIAL_YOU = "material_you";
+    static final String AMOLED_BLACK = "amoled_black";
     static final String SANITIZE_SHARE_LINKS = "sanitize_share_links";
     static final String RESOLVE_SHORT_LINKS = "resolve_short_links";
     static final String LAST_SEEN_VERSION = "last_seen_version";
@@ -123,6 +124,11 @@ public final class Settings {
 
     static boolean materialYou() {
         return isMaterialYouIncluded() && get(MATERIAL_YOU, true);
+    }
+
+    /** Pure black dark mode, through the same color hooks as Material You. */
+    static boolean amoledBlack() {
+        return isMaterialYouIncluded() && get(AMOLED_BLACK, false);
     }
 
     static boolean disableDoubleTapLike() {
