@@ -18,6 +18,7 @@ import com.android.tools.smali.dexlib2.iface.instruction.FiveRegisterInstruction
 import com.android.tools.smali.dexlib2.iface.instruction.Instruction
 import com.android.tools.smali.dexlib2.iface.instruction.OneRegisterInstruction
 import com.android.tools.smali.dexlib2.iface.instruction.ReferenceInstruction
+import com.android.tools.smali.dexlib2.iface.instruction.RegisterRangeInstruction
 import com.android.tools.smali.dexlib2.iface.instruction.WideLiteralInstruction
 import com.android.tools.smali.dexlib2.iface.reference.MethodReference
 import org.w3c.dom.Element
@@ -773,7 +774,7 @@ val materialYouPatch = bytecodePatch(
                 reference?.definingClass == "Landroid/view/Window;" &&
                     reference.name in setOf("setStatusBarColor", "setNavigationBarColor")
             }.reversed().forEach { (index, instruction) ->
-                val color = (instruction as FiveRegisterInstruction).registerD
+                val color = instruction.secondArgument()
                 method.addInstructions(
                     index,
                     """
@@ -793,7 +794,7 @@ val materialYouPatch = bytecodePatch(
             instructions.withIndex().filter { (_, instruction) ->
                 ((instruction as? ReferenceInstruction)?.reference as? MethodReference)?.name == "setBackgroundColor"
             }.reversed().forEach { (index, instruction) ->
-                val color = (instruction as FiveRegisterInstruction).registerD
+                val color = instruction.secondArgument()
                 method.addInstructions(
                     index,
                     """
@@ -821,12 +822,12 @@ val materialYouPatch = bytecodePatch(
                 instructions.withIndex().filter { (_, instruction) -> instruction.isContrastCall() }
                     .reversed()
                     .forEach { (index, instruction) ->
-                        val argument = (instruction as FiveRegisterInstruction).registerD
+                        val argument = instruction.secondArgument()
                         val hook = if (instruction.isNavigationBarColorCall()) "navigationBarColor(I)I" else "navigationBarContrast(Z)Z"
                         method.addInstructions(
                             index,
                             """
-                                invoke-static { v$argument }, $EXTENSION_PACKAGE/MaterialYou;->$hook
+                                invoke-static/range { v$argument .. v$argument }, $EXTENSION_PACKAGE/MaterialYou;->$hook
                                 move-result v$argument
                             """
                         )
@@ -837,4 +838,14 @@ val materialYouPatch = bytecodePatch(
         if (contrasts == 0) throw PatchException("No navigation bar contrast calls found")
         markIncluded("isMaterialYouIncluded")
     }
+}
+
+/**
+ * The register of the second argument of a call (the color or flag after the receiver), in either invoke form:
+ * up to five registers, or a range when the registers are above v15.
+ */
+private fun Instruction.secondArgument(): Int = when (this) {
+    is FiveRegisterInstruction -> registerD
+    is RegisterRangeInstruction -> startRegister + 1
+    else -> throw PatchException("Unexpected call $opcode")
 }

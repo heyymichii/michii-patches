@@ -348,10 +348,6 @@ public final class MaterialYou {
     }
 
     /**
-     * The app's resources, which have the wallpaper colors. The system resources don't (they have Android's default
-     * blue palette), so they're only the last resort.
-     */
-    /**
      * The Michii Patches settings colors when Material You is on, the same roles as LinkedIn's: background, rows,
      * dividers and accent. Null when it is off, so the settings keep their own colors.
      */
@@ -372,6 +368,10 @@ public final class MaterialYou {
         return colors != null ? colors[3] : fallback;
     }
 
+    /**
+     * The app's resources, which have the wallpaper colors. The system resources don't (they have Android's default
+     * blue palette), so they're only the last resort.
+     */
     private static Resources resources() {
         Context context = Settings.context();
         if (context != null) return context.getResources();
