@@ -30,7 +30,6 @@ public final class NavPanelPatch {
             Class<?> viewData = Class.forName(PACKAGE + "HomeNavPanelSectionV2ViewData");
             Class<?> sectionType = Class.forName(PACKAGE + "SectionType");
             Class<?> chevronType = Class.forName(PACKAGE + "HomeNavPanelSectionChevronType");
-            Class<?> widget = Class.forName(PACKAGE + "HomeNavPanelAnalyticsWidgetViewData");
             Object savedPosts = sectionType.getField("SAVED_POSTS").get(null);
             Object chevronRight = chevronType.getField("RIGHT").get(null);
 
@@ -40,9 +39,7 @@ public final class NavPanelPatch {
                 }
             }
 
-            Constructor<?> constructor = viewData.getConstructor(
-                    CharSequence.class, sectionType, chevronType, List.class, widget);
-            Object entry = constructor.newInstance(TITLE, savedPosts, chevronRight, Collections.emptyList(), null);
+            Object entry = newSection(viewData, savedPosts, chevronRight);
 
             ArrayList<Object> result = new ArrayList<>(list);
             int index = result.size();
@@ -59,6 +56,30 @@ public final class NavPanelPatch {
             Diagnostics.error("addSettingsItem failed", t);
             return list;
         }
+    }
+
+    /**
+     * Builds a section through whichever constructor this LinkedIn build has. Older builds take
+     * (CharSequence, SectionType, ChevronType, List, AnalyticsWidgetViewData); newer ones take a String
+     * title and append (List collapsedStackItems, int overflowCount, int defaultsMask).
+     */
+    private static Object newSection(Class<?> viewData, Object sectionType, Object chevron) throws Exception {
+        for (Constructor<?> constructor : viewData.getConstructors()) {
+            Class<?>[] types = constructor.getParameterTypes();
+            if (types.length < 3 || !types[0].isAssignableFrom(String.class)
+                    || !types[1].isInstance(sectionType) || !types[2].isInstance(chevron)) continue;
+            Object[] args = new Object[types.length];
+            args[0] = TITLE;
+            args[1] = sectionType;
+            args[2] = chevron;
+            for (int i = 3; i < types.length; i++) {
+                if (types[i] == List.class) args[i] = Collections.emptyList();
+                else if (types[i] == int.class) args[i] = 0;
+                else if (types[i] == boolean.class) args[i] = false;
+            }
+            return constructor.newInstance(args);
+        }
+        throw new NoSuchMethodException(viewData.getName() + ".<init>(title, SectionType, ChevronType, ...)");
     }
 
     /** Injected before every return of HomeNavPanelSectionV2Presenter.onBind(ViewDataBinding). */
