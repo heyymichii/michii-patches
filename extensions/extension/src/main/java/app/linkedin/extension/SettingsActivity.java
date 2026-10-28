@@ -745,6 +745,7 @@ public final class SettingsActivity extends Activity {
                 {"Block tracking", Settings.isBlockTrackingIncluded()},
                 {"Remove gaps and dividers", Settings.isRemoveGapsAndDividersIncluded()},
                 {"Material You", Settings.isMaterialYouIncluded()},
+                {"GmsCore support", Settings.isGmsCoreSupportIncluded()},
         };
     }
 

@@ -126,6 +126,10 @@ public final class Settings {
         return isMaterialYouIncluded() && get(MATERIAL_YOU, true);
     }
 
+    public static boolean isGmsCoreSupportIncluded() {
+        return false;
+    }
+
     /** Pure black dark mode, through the same color hooks as Material You. */
     static boolean amoledBlack() {
         return isMaterialYouIncluded() && get(AMOLED_BLACK, false);

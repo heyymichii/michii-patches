@@ -54,8 +54,9 @@ The app icon shortcut is added the first time LinkedIn opens after patching.
 Other versions are marked experimental and may not work.
 
 > [!NOTE]
-> **Signing in with Google doesn't work** in patched LinkedIn, because Google checks the app's signature.
-> Sign in with your e-mail and password instead. If you signed up with Google and don't have a password,
+> **Signing in with Google** needs the **GmsCore support** patch and [microG RE](https://github.com/MorpheApp/microg-RE)
+> installed and signed in to your Google account, because Google checks the app's signature.
+> Without it, sign in with your e-mail and password. If you signed up with Google and don't have a password,
 > set one first on [linkedin.com](https://www.linkedin.com/checkpoint/rp/request-password-reset) ("Forgot password").
 
 ### How to use these patches
