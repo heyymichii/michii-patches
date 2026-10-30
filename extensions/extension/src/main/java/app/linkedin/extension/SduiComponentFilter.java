@@ -20,14 +20,13 @@ public final class SduiComponentFilter {
 
     /**
      * With diagnostic logging on, logs each view name once, so a diagnostic report shows the names of the
-     * components a user saw (for new filters). Names with digits are skipped: those can carry profile names.
+     * components a user saw (for new filters). Digits are written as #, since names with digits can carry
+     * profile IDs.
      */
     private static void logViewName(String viewName) {
         if (viewName.isEmpty() || !Settings.debug() || loggedViewNames.size() >= MAX_LOGGED_VIEW_NAMES) return;
-        for (int i = 0; i < viewName.length(); i++) {
-            if (Character.isDigit(viewName.charAt(i))) return;
-        }
-        if (loggedViewNames.add(viewName)) Settings.debugLog("view " + viewName);
+        String name = viewName.replaceAll("[0-9]", "#");
+        if (loggedViewNames.add(name)) Settings.debugLog("view " + name);
     }
 
     /** Components of LinkedIn's puzzle games: search cards (search-game-card-queens), the hub (games-sdui-hub). */
@@ -45,6 +44,11 @@ public final class SduiComponentFilter {
             logViewName(viewName);
             if (Settings.hideGames() && isGameView(viewName)) {
                 return hide(true, "games: " + viewName);
+            }
+            // A My Network section of game cards, so its title ("Need a 30 second break?") goes with them.
+            if (Settings.hideGames() && (viewName.startsWith("cohorts-section") || viewName.startsWith("cohort-section"))
+                    && ProtoScanner.containsAscii(payload(component), "game-card-")) {
+                return hide(true, "games section: " + viewName);
             }
 
             switch (viewName) {
