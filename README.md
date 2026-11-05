@@ -70,7 +70,7 @@ More apps are on the way: follow the [announcements](https://github.com/heyymich
 to hear about them first, or [suggest an app](https://github.com/heyymichii/michii-patches/discussions/categories/ideas).
 
 <!-- PATCHES_START EXPANDED -->
-> **[v1.2.1](https://github.com/heyymichii/michii-patches/releases/tag/v1.2.1)**&nbsp;&nbsp;•&nbsp;&nbsp;`main`&nbsp;&nbsp;•&nbsp;&nbsp;14 patches total
+> **[v1.2.2](https://github.com/heyymichii/michii-patches/releases/tag/v1.2.2)**&nbsp;&nbsp;•&nbsp;&nbsp;`main`&nbsp;&nbsp;•&nbsp;&nbsp;14 patches total
 <details open>
 <summary><img src="assets/icons/com.linkedin.android.svg" width="20" height="20" align="top" alt=""> LinkedIn&nbsp;&nbsp;•&nbsp;&nbsp;14 patches</summary>
 <br>

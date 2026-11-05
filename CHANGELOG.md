@@ -1,3 +1,9 @@
+## [1.2.2](https://github.com/heyymichii/michii-patches/compare/v1.2.1...v1.2.2) (2026-11-05)
+
+### 🐛 Bug Fixes
+
+* Close the full page Premium ad instead of leaving a black screen ([ec9abba](https://github.com/heyymichii/michii-patches/commit/ec9abba70d53285b16976db6939520de4d625756))
+
 ## [1.2.1](https://github.com/heyymichii/michii-patches/compare/v1.2.0...v1.2.1) (2026-11-05)
 
 ### 🐛 Bug Fixes
