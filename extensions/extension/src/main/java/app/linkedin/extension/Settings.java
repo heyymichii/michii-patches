@@ -40,6 +40,7 @@ public final class Settings {
     static final String REMOVE_GAPS_AND_DIVIDERS = "remove_gaps_and_dividers";
     static final String MATERIAL_YOU = "material_you";
     static final String AMOLED_BLACK = "amoled_black";
+    static final String HIDE_TAB_LABELS = "hide_tab_labels";
     static final String SANITIZE_SHARE_LINKS = "sanitize_share_links";
     static final String RESOLVE_SHORT_LINKS = "resolve_short_links";
     static final String LAST_SEEN_VERSION = "last_seen_version";
@@ -124,6 +125,15 @@ public final class Settings {
 
     static boolean materialYou() {
         return isMaterialYouIncluded() && get(MATERIAL_YOU, true);
+    }
+
+    public static boolean isBottomBarStyleIncluded() {
+        return false;
+    }
+
+    /** Part of "Bottom bar style": icons only in the bottom bar. */
+    static boolean hideTabLabels() {
+        return isBottomBarStyleIncluded() && get(HIDE_TAB_LABELS, false);
     }
 
     public static boolean isGmsCoreSupportIncluded() {

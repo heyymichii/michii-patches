@@ -180,7 +180,8 @@ public final class SettingsActivity extends Activity {
             categories.add(feed);
         }
 
-        if (Settings.isRemoveGapsAndDividersIncluded() || Settings.isMaterialYouIncluded()) {
+        if (Settings.isRemoveGapsAndDividersIncluded() || Settings.isMaterialYouIncluded()
+                || Settings.isBottomBarStyleIncluded()) {
             Category appearance = new Category("Appearance", IconDrawable.PALETTE);
             if (Settings.isRemoveGapsAndDividersIncluded()) {
                 appearance.toggle(Settings.REMOVE_GAPS_AND_DIVIDERS, true, "Remove gaps and dividers",
@@ -193,6 +194,10 @@ public final class SettingsActivity extends Activity {
                 appearance.toggle(Settings.AMOLED_BLACK, false, "AMOLED black",
                         "Pure black backgrounds and cards in dark mode, to save battery on AMOLED screens. Restart "
                                 + "LinkedIn to apply.");
+            }
+            if (Settings.isBottomBarStyleIncluded()) {
+                appearance.toggle(Settings.HIDE_TAB_LABELS, false, "Hide tab labels",
+                        "Shows only the icons in the bottom bar. Restart LinkedIn to apply.");
             }
             categories.add(appearance);
         }
@@ -745,6 +750,7 @@ public final class SettingsActivity extends Activity {
                 {"Block tracking", Settings.isBlockTrackingIncluded()},
                 {"Remove gaps and dividers", Settings.isRemoveGapsAndDividersIncluded()},
                 {"Material You", Settings.isMaterialYouIncluded()},
+                {"Bottom bar style", Settings.isBottomBarStyleIncluded()},
                 {"GmsCore support", Settings.isGmsCoreSupportIncluded()},
         };
     }
