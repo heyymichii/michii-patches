@@ -277,6 +277,17 @@ public final class Settings {
         return hidePremium();
     }
 
+    /**
+     * Called at the start of AiSuggestionBar.setLockedState, which shows "Get AI suggestions with Premium" under
+     * text fields (the profile headline, for one) to members without Premium. Hides the bar and skips the method.
+     */
+    public static boolean hideLockedAiSuggestionBar(android.view.View bar) {
+        if (!hidePremium() || bar == null) return false;
+        bar.setVisibility(android.view.View.GONE);
+        debugLog("hide premium AI suggestion bar");
+        return true;
+    }
+
     static boolean downloadMedia() {
         return isDownloadMediaIncluded() && get(DOWNLOAD_MEDIA, true);
     }
