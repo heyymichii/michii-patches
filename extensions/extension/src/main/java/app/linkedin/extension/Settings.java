@@ -41,6 +41,7 @@ public final class Settings {
     static final String MATERIAL_YOU = "material_you";
     static final String AMOLED_BLACK = "amoled_black";
     static final String HIDE_TAB_LABELS = "hide_tab_labels";
+    static final String ICON_ONLY_ACTIONS = "icon_only_actions";
     static final String ACCENT_COLOR = "accent_color";
     static final String SANITIZE_SHARE_LINKS = "sanitize_share_links";
     static final String RESOLVE_SHORT_LINKS = "resolve_short_links";
@@ -135,6 +136,14 @@ public final class Settings {
     /** Part of "Bottom bar style": icons only in the bottom bar. */
     static boolean hideTabLabels() {
         return isBottomBarStyleIncluded() && get(HIDE_TAB_LABELS, false);
+    }
+
+    public static boolean isIconOnlyActionsIncluded() {
+        return false;
+    }
+
+    static boolean iconOnlyActions() {
+        return isIconOnlyActionsIncluded() && get(ICON_ONLY_ACTIONS, false);
     }
 
     private static String accentRaw;

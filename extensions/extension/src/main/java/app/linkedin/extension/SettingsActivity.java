@@ -182,7 +182,7 @@ public final class SettingsActivity extends Activity {
         }
 
         if (Settings.isRemoveGapsAndDividersIncluded() || Settings.isMaterialYouIncluded()
-                || Settings.isBottomBarStyleIncluded()) {
+                || Settings.isBottomBarStyleIncluded() || Settings.isIconOnlyActionsIncluded()) {
             Category appearance = new Category("Appearance", IconDrawable.PALETTE);
             if (Settings.isRemoveGapsAndDividersIncluded()) {
                 appearance.toggle(Settings.REMOVE_GAPS_AND_DIVIDERS, true, "Remove gaps and dividers",
@@ -212,6 +212,11 @@ public final class SettingsActivity extends Activity {
             if (Settings.isBottomBarStyleIncluded()) {
                 appearance.toggle(Settings.HIDE_TAB_LABELS, false, "Hide tab labels",
                         "Shows only the icons in the bottom bar. Restart LinkedIn to apply.");
+            }
+            if (Settings.isIconOnlyActionsIncluded()) {
+                appearance.toggle(Settings.ICON_ONLY_ACTIONS, false, "Icon-only post actions",
+                        "Like, Comment, Repost and Send under posts without their labels. Restart LinkedIn to "
+                                + "apply.");
             }
             categories.add(appearance);
         }
@@ -765,6 +770,7 @@ public final class SettingsActivity extends Activity {
                 {"Remove gaps and dividers", Settings.isRemoveGapsAndDividersIncluded()},
                 {"Material You", Settings.isMaterialYouIncluded()},
                 {"Bottom bar style", Settings.isBottomBarStyleIncluded()},
+                {"Icon-only post actions", Settings.isIconOnlyActionsIncluded()},
                 {"GmsCore support", Settings.isGmsCoreSupportIncluded()},
         };
     }
