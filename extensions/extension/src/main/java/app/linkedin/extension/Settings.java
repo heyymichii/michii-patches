@@ -288,6 +288,21 @@ public final class Settings {
         return true;
     }
 
+    /** Full page Premium ads, such as the one LinkedIn opens at launch (PremiumUpsellFullPageTakeoverNavGraphScreen). */
+    private static final String PREMIUM_TAKEOVER_SCREEN = "PremiumUpsellFullPageTakeover";
+
+    /**
+     * When a server drawn screen opens: closes full page Premium ads like the back button would. Hiding their content
+     * alone left an empty black page.
+     */
+    static void closePremiumTakeover(android.app.Activity activity, String screen) {
+        if (activity == null || !screen.contains(PREMIUM_TAKEOVER_SCREEN) || !hidePremium()) return;
+        debugLog("close premium takeover: " + screen);
+        new android.os.Handler(android.os.Looper.getMainLooper()).post(() -> {
+            if (!activity.isFinishing()) activity.onBackPressed();
+        });
+    }
+
     static boolean downloadMedia() {
         return isDownloadMediaIncluded() && get(DOWNLOAD_MEDIA, true);
     }
