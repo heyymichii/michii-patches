@@ -1,3 +1,12 @@
+## [1.2.1](https://github.com/heyymichii/michii-patches/compare/v1.2.0...v1.2.1) (2026-11-05)
+
+### 🐛 Bug Fixes
+
+* Hide more Premium upsells ([3121486](https://github.com/heyymichii/michii-patches/commit/312148698566aa231a645661ad110c9e5c5888cb)), closes [#9](https://github.com/heyymichii/michii-patches/issues/9)
+* Hide My Network's games section with Hide games ([0c1592d](https://github.com/heyymichii/michii-patches/commit/0c1592da2011aeee52ec64477003eaf5ffe9ff7e)), closes [#15](https://github.com/heyymichii/michii-patches/issues/15)
+* Let AMOLED black reach older screens ([06ddfd2](https://github.com/heyymichii/michii-patches/commit/06ddfd23e4040d56d5b6f8feb840f1f56aa23f10)), closes [#13](https://github.com/heyymichii/michii-patches/issues/13)
+* Show the Michii Patches entry above the Me panel's sections ([89add05](https://github.com/heyymichii/michii-patches/commit/89add05f7aa108885c853c06eee15087a3872065)), closes [#12](https://github.com/heyymichii/michii-patches/issues/12)
+
 ## [1.2.0](https://github.com/heyymichii/michii-patches/compare/v1.1.1...v1.2.0) (2026-10-28)
 
 ### 🐛 Bug Fixes
