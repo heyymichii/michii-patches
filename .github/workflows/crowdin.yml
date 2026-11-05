@@ -27,7 +27,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - uses: crowdin/github-action@v2
+      - uses: crowdin/github-action@v3
         with:
           upload_sources: true
           upload_translations: ${{ inputs.upload_translations || false }}
