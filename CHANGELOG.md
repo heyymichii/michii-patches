@@ -1,3 +1,12 @@
+## [1.3.0](https://github.com/heyymichii/michii-patches/compare/v1.2.2...v1.3.0) (2026-11-05)
+
+### ✨ New Features
+
+* Add Accent color ([2ea52bb](https://github.com/heyymichii/michii-patches/commit/2ea52bbb84d81907391917e7e90035ddf4ea8a2c))
+* Add Bottom bar style ([2a29ad1](https://github.com/heyymichii/michii-patches/commit/2a29ad14c6baf3a99fa479e5b23cb8df1d52333e))
+* Add Icon-only post actions ([c644286](https://github.com/heyymichii/michii-patches/commit/c644286350f840f355906f171391eb98761528dd))
+* Hide bottom bar tabs and badges, and copy post text ([7ad46de](https://github.com/heyymichii/michii-patches/commit/7ad46deae5ae4a44cf2daa3ad99eb230ec25ffbe))
+
 ## [1.2.2](https://github.com/heyymichii/michii-patches/compare/v1.2.1...v1.2.2) (2026-11-05)
 
 ### 🐛 Bug Fixes
