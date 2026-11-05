@@ -42,6 +42,7 @@ public final class SduiComponentFilter {
             String viewName = Proto.string(viewTracking, "getViewName");
             String screenName = Proto.string(component, "getObservabilityViewName");
             logViewName(viewName);
+            CopyPostText.onComponent(component, viewName);
             if (Settings.hideGames() && isGameView(viewName)) {
                 return hide(true, "games: " + viewName);
             }

@@ -6,11 +6,16 @@ import app.linkedin.patches.shared.markIncluded
 import app.linkedin.patches.shared.settingsPatch
 import app.morphe.patcher.Fingerprint
 import app.morphe.patcher.extensions.InstructionExtensions.addInstruction
+import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
+import app.morphe.patcher.extensions.InstructionExtensions.addInstructionsWithLabels
+import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
 import app.morphe.patcher.patch.BytecodePatch
 import app.morphe.patcher.patch.PatchException
 import app.morphe.patcher.patch.booleanOption
 import app.morphe.patcher.patch.bytecodePatch
 import app.morphe.patcher.patch.resourcePatch
+import app.morphe.patcher.util.proxy.mutableTypes.MutableMethod
+import app.morphe.patcher.util.smali.ExternalLabel
 import com.android.tools.smali.dexlib2.Opcode
 
 /** Material icon outlines (24dp): (selected, unselected) path data, from Google's Material Icons (Apache 2.0). */
@@ -93,33 +98,87 @@ private object TabLabelFingerprint : Fingerprint(
     parameters = listOf("Ljava/lang/String;"),
 )
 
+private const val BAR_STYLE = "$EXTENSION_PACKAGE/BottomBarStyle;"
+
+/** SlimBottomBar.resizeTabsToCorrectSizes(): gives every tab an equal width. */
+private object ResizeTabsFingerprint : Fingerprint(
+    definingClass = "Lcom/linkedin/android/home/bottomnav/SlimBottomBar;",
+    name = "resizeTabsToCorrectSizes",
+    returnType = "V",
+    parameters = listOf(),
+)
+
+/** BottomNavigationIndicatorView.setSelectedIndex(position, animate): moves the line under the selected tab. */
+private object IndicatorIndexFingerprint : Fingerprint(
+    definingClass = "Lcom/linkedin/android/home/bottomnav/BottomNavigationIndicatorView;",
+    name = "setSelectedIndex",
+    returnType = "V",
+    parameters = listOf("I", "Z"),
+)
+
+/** SlimNotificationBadge.animateEnter(type, animate): shows a tab's count (type 2) or dot (type 1). */
+private object BadgeEnterFingerprint : Fingerprint(
+    definingClass = "Lcom/linkedin/android/home/bottomnav/SlimNotificationBadge;",
+    name = "animateEnter$1",
+    returnType = "V",
+    parameters = listOf("I", "Z"),
+)
+
+/** Inserts [instruction] before every return-void of the method. */
+private fun MutableMethod.beforeReturns(instruction: String) {
+    val returns = implementation!!.instructions.withIndex()
+        .filter { (_, it) -> it.opcode == Opcode.RETURN_VOID }
+        .map { it.index }
+    if (returns.isEmpty()) throw PatchException("No return in $name")
+    returns.reversed().forEach { addInstruction(it, instruction) }
+}
+
 @Suppress("unused")
 val bottomBarStylePatch: BytecodePatch = bytecodePatch(
     name = "Bottom bar style",
-    description = "Material icons in the bottom bar (filled when selected, outlined otherwise), and a switch in " +
-        "Michii Patches to show only the icons, without labels.",
-    default = false
+    description = "Adds switches in Michii Patches to hide bottom bar tabs, their labels and their notification " +
+        "badges, and optionally Material icons in the bottom bar (filled when selected, outlined otherwise).",
+    default = true
 ) {
     compatibleWith(COMPATIBILITY_LINKEDIN)
     dependsOn(settingsPatch, materialTabIconsResourcePatch)
 
     booleanOption(
         key = MATERIAL_ICONS_OPTION,
-        default = true,
+        default = false,
         title = "Material icons",
         description = "Replaces LinkedIn's Home, My Network, Notifications, Jobs and Video tab icons with Material " +
             "icons. Chosen when patching.",
     )
 
     execute {
-        TabLabelFingerprint.method.apply {
-            val returns = implementation!!.instructions.withIndex()
-                .filter { (_, instruction) -> instruction.opcode == Opcode.RETURN_VOID }
-                .map { it.index }
-            if (returns.isEmpty()) throw PatchException("No return in setBadgeLabelText")
-            returns.reversed().forEach { index ->
-                addInstruction(index, "invoke-static/range { p0 .. p0 }, $EXTENSION_PACKAGE/BottomBarStyle;->onTabLabel(Landroid/view/View;)V")
-            }
+        TabLabelFingerprint.method.beforeReturns(
+            "invoke-static/range { p0 .. p0 }, $BAR_STYLE->onTabLabel(Landroid/view/View;)V"
+        )
+        ResizeTabsFingerprint.method.apply {
+            // The method reuses p0 for other values before it returns, so the bar is passed at its start.
+            beforeReturns("invoke-static { }, $BAR_STYLE->onTabsResized()V")
+            addInstructions(0, "invoke-static/range { p0 .. p0 }, $BAR_STYLE->onTabsResize(Landroid/view/View;)V")
+        }
+        IndicatorIndexFingerprint.method.addInstructions(
+            0,
+            """
+                invoke-static/range { p1 .. p1 }, $BAR_STYLE->indicatorIndex(I)I
+                move-result p1
+            """
+        )
+        BadgeEnterFingerprint.method.apply {
+            // At method entry every local register is free, so v0 can be used as scratch.
+            addInstructionsWithLabels(
+                0,
+                """
+                    invoke-static { }, $BAR_STYLE->hideBadge()Z
+                    move-result v0
+                    if-eqz v0, :show
+                    return-void
+                """,
+                ExternalLabel("show", getInstruction(0))
+            )
         }
         markIncluded("isBottomBarStyleIncluded")
     }

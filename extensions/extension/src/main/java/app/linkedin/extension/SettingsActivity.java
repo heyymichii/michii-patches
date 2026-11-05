@@ -152,8 +152,13 @@ public final class SettingsActivity extends Activity {
             categories.add(ads);
         }
 
-        if (Settings.isFeedFiltersIncluded() || Settings.isDisableDoubleTapLikeIncluded()) {
+        if (Settings.isFeedFiltersIncluded() || Settings.isDisableDoubleTapLikeIncluded()
+                || Settings.isCopyPostTextIncluded()) {
             Category feed = new Category("Feed", IconDrawable.FEED);
+            if (Settings.isCopyPostTextIncluded()) {
+                feed.toggle(Settings.COPY_POST_TEXT, true, "Copy post text",
+                        "Long press a post's text to copy all of it.");
+            }
             if (Settings.isDisableDoubleTapLikeIncluded()) {
                 feed.toggle(Settings.DISABLE_DOUBLE_TAP_LIKE, true, "Disable double-tap like",
                         "Double tapping a post or photo no longer likes it.");
@@ -212,6 +217,21 @@ public final class SettingsActivity extends Activity {
             if (Settings.isBottomBarStyleIncluded()) {
                 appearance.toggle(Settings.HIDE_TAB_LABELS, false, "Hide tab labels",
                         "Shows only the icons in the bottom bar. Restart LinkedIn to apply.");
+                appearance.value("Hidden tabs", new ValueRow() {
+                    public String currentValue() {
+                        return hiddenTabsSummary();
+                    }
+
+                    public Runnable onClick() {
+                        return SettingsActivity.this::chooseHiddenTabs;
+                    }
+
+                    public boolean enabled() {
+                        return true;
+                    }
+                });
+                appearance.toggle(Settings.HIDE_NAV_BADGES, false, "Hide notification badges",
+                        "No counts or dots on the bottom bar tabs. Restart LinkedIn to apply.");
             }
             if (Settings.isIconOnlyActionsIncluded()) {
                 appearance.toggle(Settings.ICON_ONLY_ACTIONS, false, "Icon-only post actions",
@@ -771,6 +791,7 @@ public final class SettingsActivity extends Activity {
                 {"Material You", Settings.isMaterialYouIncluded()},
                 {"Bottom bar style", Settings.isBottomBarStyleIncluded()},
                 {"Icon-only post actions", Settings.isIconOnlyActionsIncluded()},
+                {"Copy post text", Settings.isCopyPostTextIncluded()},
                 {"GmsCore support", Settings.isGmsCoreSupportIncluded()},
         };
     }
@@ -1121,6 +1142,44 @@ public final class SettingsActivity extends Activity {
                 .setPositiveButton(I18n.tr("Save"), (dialog, which) -> {
                     int rgb = AccentPalette.parse(input.getText().toString());
                     if (rgb >= 0) setAccent(AccentPalette.format(rgb));
+                })
+                .setNegativeButton(I18n.tr("Cancel"), null)
+                .show();
+    }
+
+    private String hiddenTabsSummary() {
+        java.util.Set<String> hidden = Settings.hiddenTabs();
+        StringBuilder names = new StringBuilder();
+        for (int i = 0; i < BottomBarStyle.HIDEABLE_TABS.length; i++) {
+            if (!hidden.contains(BottomBarStyle.HIDEABLE_TABS[i])) continue;
+            if (names.length() > 0) names.append(", ");
+            names.append(I18n.tr(BottomBarStyle.HIDEABLE_TAB_NAMES[i]));
+        }
+        return names.length() == 0 ? I18n.tr("None") : names.toString();
+    }
+
+    private void chooseHiddenTabs() {
+        String[] tabs = BottomBarStyle.HIDEABLE_TABS;
+        String[] names = new String[tabs.length];
+        boolean[] checked = new boolean[tabs.length];
+        java.util.Set<String> hidden = Settings.hiddenTabs();
+        for (int i = 0; i < tabs.length; i++) {
+            names[i] = I18n.tr(BottomBarStyle.HIDEABLE_TAB_NAMES[i]);
+            checked[i] = hidden.contains(tabs[i]);
+        }
+        new AlertDialog.Builder(this, dialogTheme())
+                .setTitle(I18n.tr("Hidden tabs"))
+                .setMultiChoiceItems(names, checked, (dialog, which, isChecked) -> checked[which] = isChecked)
+                .setPositiveButton(I18n.tr("Save"), (dialog, which) -> {
+                    StringBuilder value = new StringBuilder();
+                    for (int i = 0; i < tabs.length; i++) {
+                        if (!checked[i]) continue;
+                        if (value.length() > 0) value.append(',');
+                        value.append(tabs[i]);
+                    }
+                    Settings.setString(Settings.HIDDEN_TABS, value.toString());
+                    refresh();
+                    showRestartBanner();
                 })
                 .setNegativeButton(I18n.tr("Cancel"), null)
                 .show();
