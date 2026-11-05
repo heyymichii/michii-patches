@@ -41,6 +41,7 @@ public final class Settings {
     static final String MATERIAL_YOU = "material_you";
     static final String AMOLED_BLACK = "amoled_black";
     static final String HIDE_TAB_LABELS = "hide_tab_labels";
+    static final String ACCENT_COLOR = "accent_color";
     static final String SANITIZE_SHARE_LINKS = "sanitize_share_links";
     static final String RESOLVE_SHORT_LINKS = "resolve_short_links";
     static final String LAST_SEEN_VERSION = "last_seen_version";
@@ -134,6 +135,23 @@ public final class Settings {
     /** Part of "Bottom bar style": icons only in the bottom bar. */
     static boolean hideTabLabels() {
         return isBottomBarStyleIncluded() && get(HIDE_TAB_LABELS, false);
+    }
+
+    private static String accentRaw;
+    private static int accentParsed = -1;
+
+    /**
+     * Part of Material You: the chosen accent color (0xRRGGBB), or -1 for the wallpaper's. Read for every themed
+     * color, so the parsed value is kept.
+     */
+    static int accentColor() {
+        if (!isMaterialYouIncluded()) return -1;
+        String raw = getString(ACCENT_COLOR, "");
+        if (!raw.equals(accentRaw)) {
+            accentRaw = raw;
+            accentParsed = AccentPalette.parse(raw);
+        }
+        return accentParsed;
     }
 
     public static boolean isGmsCoreSupportIncluded() {

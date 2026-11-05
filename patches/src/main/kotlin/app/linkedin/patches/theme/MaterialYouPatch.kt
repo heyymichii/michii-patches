@@ -735,7 +735,8 @@ val materialYouPatch: BytecodePatch = bytecodePatch(
     name = "Material You",
     description = "Uses your wallpaper's colors (Android 12+): the accent color instead of LinkedIn blue and the " +
         "green of selected filters, and Material 3 surface colors for backgrounds, cards, bars and borders. " +
-        "Some screens drawn by LinkedIn's servers may keep their own colors.",
+        "Some screens drawn by LinkedIn's servers may keep their own colors. On any Android version, an accent " +
+        "color of your choice can be set in Michii Patches.",
     default = false
 ) {
     compatibleWith(COMPATIBILITY_LINKEDIN)
